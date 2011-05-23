@@ -47,6 +47,27 @@ global MCLK as integer
 sync on : sync rate 0
 randomize timer()
 
+cls rgb(239,239,239)
+sync
+
+start bbb gui
+
+global MainWin
+MainWin = get dbpro window() : set main window MainWin
+//cb = make checkbox(100,100,100,15,"Checkbox",MainWin)
+f$ = ""
+egp = make editbox(10,10,400,20,ES_READONLY,MainWin) : window set text egp,"This is read only editbox"
+but = make button(420,9,30,20,"...",MainWin)
+
+repeat
+    if button clicked(but)
+        f$ = open file dialog("Locate gource.exe","gource.exe|gource.exe")
+    endif
+until returnkey()
+
+end bbb gui
+end
+
 // Init UI.
 UI_Init()
 GPButton = UI_NewButton(10, 10, 16, 16, "", ACTION_SETGOURCEPATH)
