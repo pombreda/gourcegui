@@ -5,7 +5,7 @@ project name=GourceGUI
 
 ; **** source file information ****
 main=main.dba
-LineMain=18
+LineMain=51
 include1=fileselector.dba
 LineInclude1=19
 include2=module_ui.dba
