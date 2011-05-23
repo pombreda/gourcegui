@@ -1,0 +1,239 @@
+REM - fileselector.dba
+REM - BY: Martin Enderleit
+
+
+REM - UDT to store file info...
+type FSEL_FILE_TYPE
+    name as string
+    folder as boolean
+endtype
+
+
+REM - Similar to PERFORM CHECKLIST FOR FILES except this one puts the Folders at the top,
+REM - and you can choose to only add files with a certain Extension.
+REM - You can also leave out FOLDERS by setting skipDirs to 1.
+REM - extension = ".bmp" (will only add files with a ".bmp" extension)
+REM - If you leave the extension string empty, all files will be added.
+REM - If you set stripExtension to 1, the extension will be removed from the files...
+function FSEL_BuildFileList(extension as string, skipDirs as boolean, stripExtension as boolean, skipFiles as boolean)
+    undim FSEL_File()
+    global dim FSEL_File() as FSEL_FILE_TYPE
+    global FSEL_NumFiles as integer
+    FSEL_NumFiles = 0
+    clVal as integer
+    clStr as string
+    strLen as integer
+    ext as string
+    extLen as integer
+    extLen = len(extension)
+    perform checklist for files
+    REM - First add the FOLDERS ...
+    if skipDirs = 0
+        for i=1 to checklist quantity()
+            clVal = checklist value a(i)
+            clStr = checklist string$(i)
+            if clVal = 1
+                array insert at bottom FSEL_File()
+                FSEL_File().name = clStr
+                FSEL_File().folder = 1
+                inc FSEL_NumFiles, 1
+            endif
+        next i
+     endif
+     REM - ... then add the FILES
+     if skipFiles = 0
+        for i=1 to checklist quantity()
+            clVal = checklist value a(i)
+            clStr = checklist string$(i)
+            strLen = len( checklist string$(i) )
+            if clVal = 0
+                if extLen > 0
+                    REM - If the Extension is not empty, only add FILES with the correct extension...
+                    if strLen > extLen
+                        ext = right$(clStr, extLen)
+                        if lower$(ext) = lower$(extension)
+                            array insert at bottom FSEL_File()
+                            if stripExtension
+                                FSEL_File().name = left$(clStr, strLen-extLen)
+                            else
+                                FSEL_File().name = clStr
+                            endif
+                            FSEL_File().folder = 0
+                            inc FSEL_NumFiles, 1
+                        endif
+                    endif
+                else
+                    REM - ... otherwise add all FILES
+                    array insert at bottom FSEL_File()
+                    FSEL_File().name = clStr
+                    FSEL_File().folder = 0
+                    inc FSEL_NumFiles, 1
+                endif
+            endif
+        next i
+    endif
+endfunction
+
+
+REM - Work in Progress... KIND OF USEABLE!
+REM - TODO: Limit files shown to a certain number of Rows, and let user scroll up/down...
+REM - TODO: Some kind of final file selection, so we can actually use it... (Temporarily set to ENTER)
+REM - TODO: Enable writing a filename, for saving a new file...
+REM - TODO: Maybe add a LOAD/SAVE button to click with mouse...
+function FSEL_FileSelector(fsx as integer, fsy as integer, extension as string, skipDirs as boolean, stripExtension as boolean, skipFiles as boolean)
+    REM - Create a stack to store the previous directories...
+    dim lastDir() as string
+    NumDirs as integer
+    NumDirs = 0
+    REM - Save the original Path...
+    oldDir as string
+    oldDir = get dir$()
+    REM - Selected File
+    fSel as integer
+    fSel = -1
+    fname$ = ""
+    REM - Key and Mouse locking
+    KeyLock as boolean
+    MouseLock as boolean
+    KeyLock = 1
+    MouseLock = 1
+    REM - Build initial FILE list...
+    FSEL_BuildFileList(extension, skipDirs, stripExtension, skipFiles)
+    do
+        MSX = mousex()
+        MSY = mousey()
+        MCLK = mouseclick()
+        
+        REM - Update Mouse and Key locking...
+        if MCLK = 0 and MouseLock = 1 then MouseLock = 0
+        if scancode() = 0 and KeyLock = 1 then KeyLock = 0
+
+        REM - Press BACKSPACE to go to the last Dir.
+        if keystate(14) and NumDirs > 0 and KeyLock = 0
+            folder$ = lastDir()
+            set dir folder$
+            remove from stack lastDir()
+            dec NumDirs, 1
+            fSel = -1
+            FSEL_BuildFileList(extension, skipDirs, stripExtension, skipFiles)
+            KeyLock = 1
+        endif
+        
+        if returnkey()
+            if fSel >= 0 and fSel < FSEL_NumFiles
+                if FSEL_File(fSel).folder = 0 then fname$ = FSEL_File(fSel).name
+            endif
+            folder$ = get dir$()
+            fname$ = folder$ + "/" + fname$
+            set dir oldDir
+            exitfunction fname$
+        endif
+        
+        cls 0
+        fY = (MSY-fsy)/15
+        if fY >= 1 and fY <= FSEL_NumFiles
+            REM - Highlight the file that the mouse is over...
+            ink rgb(63,63,63),0
+            box fsx, fY*15+fsx, fsx+500, fY*15+15+fsy
+            if MCLK = 1 and MouseLock = 0
+                REM - Select the file if mouse is clicked...
+                fSel = fY - 1
+                MouseLock = 1
+            endif
+        endif
+        REM - Print the current Dir.
+        ink rgb(255,223,0),0
+        text fsx, fsy, get dir$()
+        y = 15
+        for i=0 to FSEL_NumFiles-1
+            REM - Print the files and folders in the current dir...
+            if FSEL_File(i).folder = 0 then ink rgb(255,255,255),0
+            if FSEL_File(i).folder = 1 then ink rgb(255,255,0),0
+            text fsx, y+fsy, FSEL_File(i).name
+            inc y,15
+        next i
+        if fSel >= 0 and fSel < FSEL_NumFiles
+            if FSEL_File(fSel).folder = 1
+                REM - If a folder was selected, then set that as the new Dir.
+                add to stack lastDir()
+                lastDir() = get dir$()
+                inc NumDirs, 1
+                folder$ = FSEL_File(fSel).name
+                set dir folder$
+                fSel = -1
+                FSEL_BuildFileList(extension, skipDirs, stripExtension, skipFiles)
+            else
+                REM - Else, show the name of the file Selected.
+                ink rgb(191,191,191),0
+                text fsx, y+15+fsy, "FILE: " + FSEL_File(fSel).name
+            endif
+        else
+            REM - If no file is selected...
+            ink rgb(191,191,191),0
+            text fsx, y+15+fsy, "FILE:"
+        endif
+        ink rgb(0,255,0),0
+        text fsx, y+45+fsy, "Press ENTER to make final selection!"
+        sync
+    loop
+    REM - Set the working dir back to the original Path...
+    set dir oldDir
+endfunction fname$
+
+REM - Simple Name Input function... I use it for saving... :P
+REM - Limits the types of chars you can input to alphanumerics and dashes...
+function FSEL_NameInput(Prompt as string, limitLen as integer)
+    BSTimer as integer
+    BSHeld as boolean
+    BSHeld = 1
+    BSTimer = 0
+    name$ = ""
+    
+    REM - Default length limit = 25
+    if limitLen = 0 then limitLen = 25
+    
+    REM - Make sure we don't get any garbage chars from previous input...    
+    repeat
+    until inkey$() = ""
+    
+    oldTime = timer()
+    repeat
+        difTime = timer() - oldTime
+        oldTime = timer()
+    
+        dec BSTimer, difTime
+        if BSTimer <= 0 then BSTimer = 0
+    
+        a$ = ""
+        cls
+
+        a$ = inkey$()
+        c = asc(a$)
+
+        if a$ <> old$ and len(name$) < limitLen
+            if (c >= asc("A") and c <= asc("Z")) or (c >= asc("a") and c <= asc("z")) or (c = asc("-")) or (c >= asc("0") and c <= asc("9")) 
+                name$ = name$ + a$
+            endif
+        endif
+        if c <> 8 and BSHeld = 1 then BSHeld = 0
+        if c = 8 and BSHeld = 1
+            if BSTimer = 0
+                name$ = left$(name$, len(name$)-1)
+                BSTimer = 30
+            endif
+        endif
+        if c = 8 and BSHeld = 0
+            BSHeld = 1
+            name$ = left$(name$, len(name$)-1)
+            BSTimer = 500
+        endif
+
+        old$ = a$
+
+        ink rgb(255,255,0),0
+        text 0, 0,  Prompt + " (" + str$(len(name$)) + "/" + str$(limitLen) + ")"
+        ink rgb(255,255,255),0
+        text 0, 15, name$ + "_"
+        sync
+    until returnkey()
+endfunction name$
