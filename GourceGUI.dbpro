@@ -5,11 +5,11 @@ project name=GourceGUI
 
 ; **** source file information ****
 main=main.dba
-LineMain=31
+LineMain=2
 include1=fileselector.dba
-LineInclude1=175
+LineInclude1=0
 include2=module_ui.dba
-LineInclude2=9
+LineInclude2=1
 
 ; **** Executable Information  ***
 ; build types: exe, media, installer, alone
@@ -42,7 +42,7 @@ window resolution=800x600
 
 ; **** Media ****
 ; Example entries: media1=graphics\*.jpg
-media root path=C:\Users\Martin\Documents\DBProjects\GourceGUI\
+media root path=C:\Users\Martin\Documents\DBProjects\gourcegui\
 
 ; **** Icons ****
 
@@ -52,8 +52,8 @@ media root path=C:\Users\Martin\Documents\DBProjects\GourceGUI\
 VerComments=
 VerCompany=
 VerFileDesc=
-VerFileNumber=v0.1
-VerInternal=v0.1
+VerFileNumber=v1.0
+VerInternal=v1.0
 VerCopyright=
 VerTrademark=
 VerFilename=
