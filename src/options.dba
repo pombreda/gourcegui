@@ -19,12 +19,12 @@
 
 // Initialize the Options.
 function InitOptions()
-    global FLAG_MultiSampling as boolean
-    global FLAG_Fullscreen as boolean
-    global FLAG_Key as boolean
-    global FLAG_Loop as boolean
-    global FLAG_Realtime as boolean
-    global FLAG_NoVSync as boolean
+    global FLAG_MultiSampling as integer
+    global FLAG_Fullscreen as integer
+    global FLAG_Key as integer
+    global FLAG_Loop as integer
+    global FLAG_Realtime as integer
+    global FLAG_NoVSync as integer
     global COLOR_Background as dword
     global COLOR_Text as dword
     SetDefaultOptions()
@@ -55,4 +55,50 @@ function ParseOptions()
     if FLAG_Loop then GG_Options = GG_Options + "--loop "
     if FLAG_Realtime then GG_Options = GG_Options + "--realtime "
     if FLAG_NoVSync then GG_Options = GG_Options + "--no-vsync "
+    if GG_LogoPath <> "" then GG_Options = GG_Options + "--logo " + GG_LogoPath + " "
+    if GG_BGPath <> "" then GG_Options = GG_Options + "--background-image " + GG_BGPath + " "
 endfunction
+
+// Save options.
+function SaveOptions()
+    if file exist("ggoptions.cfg") then delete file "ggoptions.cfg"
+    f = find free file()
+    if f = 0 then exitfunction
+    open to write f, "ggoptions.cfg"
+        write string f, GG_GourcePath
+        write string f, GG_VCSPath
+        write string f, GG_LogoPath
+        write string f, GG_BGPath
+        write file f, FLAG_MultiSampling
+        write file f, FLAG_Fullscreen
+        write file f, FLAG_Key
+        write file f, FLAG_Loop
+        write file f, FLAG_Realtime
+        write file f, FLAG_NoVSync
+        write file f, COLOR_Background
+        write file f, COLOR_Text
+    close file f
+endfunction
+
+function LoadOptions()
+    Success as boolean
+    Success = 0
+    if file exist("ggoptions.cfg") = 0 then exitfunction Success
+    f = find free file()
+    if f = 0 then exitfunction Success
+    open to read f, "ggoptions.cfg"
+        read string f, GG_GourcePath
+        read string f, GG_VCSPath
+        read string f, GG_LogoPath
+        read string f, GG_BGPath
+        read file f, FLAG_MultiSampling
+        read file f, FLAG_Fullscreen
+        read file f, FLAG_Key
+        read file f, FLAG_Loop
+        read file f, FLAG_Realtime
+        read file f, FLAG_NoVSync
+        read file f, COLOR_Background
+        read file f, COLOR_Text
+    close file f
+    Success = 1
+endfunction Success
