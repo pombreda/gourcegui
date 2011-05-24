@@ -42,7 +42,7 @@ window resolution=800x600
 
 ; **** Media ****
 ; Example entries: media1=graphics\*.jpg
-media root path=C:\Users\Martin\Documents\DBProjects\gourcegui\
+media root path=C:\Users\Martin\Documents\DBProjects\gourcegui\src\
 
 ; **** Icons ****
 
