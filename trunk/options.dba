@@ -1,0 +1,43 @@
+// GOURCE GUI
+// © Copyright 2011 Martin Enderleit
+//
+// This file is part of GourceGUI.
+//
+// GourceGUI is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// GourceGUI is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with GourceGUI.  If not, see <http://www.gnu.org/licenses/>.
+
+
+// Initialize the Options.
+function InitOptions()
+    global FLAG_MultiSampling as boolean
+    global FLAG_Fullscreen as boolean
+    global FLAG_Key as boolean
+    global FLAG_Loop as boolean
+    global FLAG_Realtime as boolean
+    global FLAG_NoVSync as boolean
+    global COLOR_Background as dword
+    global COLOR_Text as dword
+    SetDefaultOptions()
+endfunction
+
+// Set all Options to default values.
+function SetDefaultOptions()
+    FLAG_MultiSampling = 0
+    FLAG_Fullscreen = 0
+    FLAG_Key = 0
+    FLAG_Loop = 0
+    FLAG_Realtime = 0
+    FLAG_NoVSync = 0
+    COLOR_Background = rgb(0,0,0)
+    COLOR_Text = rgb(255,255,255)
+endfunction

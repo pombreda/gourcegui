@@ -40,7 +40,7 @@ global GG_VCSPath as string
 global GG_LogoPath as string
 global GG_BGPath as string
 
-// Positioning of UI elements.
+// Positioning of PATH area.
 global GPPos as coord_type
 global VPPos as coord_type
 global LPPos as coord_type
@@ -54,32 +54,27 @@ LPPos.y = VPPos.y + 50
 BPPos.x = GPPos.x
 BPPos.y = LPPos.y + 50
 
+// Positioning of FLAGS area.
 global Flags as coord_type
 Flags.x = GPPos.x
 Flags.y = BPPos.y + 100
-
-global GourceButton as integer
-global ExitButton as integer
-
-// Timer and Mouse globals.
-global difTime as integer
-global oldTime as integer
-global MSX as integer
-global MSY as integer
-global MCLK as integer
 
 // Init program.
 sync on : sync rate 0
 randomize timer()
 
+// Set the background color.
 cls rgb(239,239,239)
 sync
 
+// Start the BBB-GUI plugin.
 start bbb gui
 
+// Get handle to the main window. (DBPro window)
 global MainWin as integer
 MainWin = get dbpro window() : set main window MainWin
 
+// Create the Labels, EditBoxes, and Buttons for the PATH area.
 GPLabel = make label(GPPos.x,GPPos.y,500,20,"Gource Executable",MainWin)
 GPEditBox = make editbox(GPPos.x,GPPos.y+20,600,20,ES_READONLY,MainWin) : window set text GPEditBox, GG_GourcePath
 GPButton = make button(GPPos.x+600,GPPos.y+19,20,20,"...",MainWin)
@@ -93,10 +88,11 @@ BPLabel = make label(BPPos.x,BPPos.y,500,20,"Background Image",MainWin)
 BPEditBox = make editbox(BPPos.x,BPPos.y+20,600,20,ES_READONLY,MainWin) : window set text BPEditBox, GG_BGPath
 BPButton = make button(BPPos.x+600,BPPos.y+19,20,20,"...",MainWin)
 
-//make hsplitter(LPPos.x, LPPos.y+50, 620, 5, MainWin)
+// Bugged command?
+// make hsplitter(LPPos.x, LPPos.y+50, 620, 5, MainWin)
 
+// Create the CheckBoxes, and the Label for the FLAGS area.
 FlagLabel = make label(Flags.x, Flags.y-20, 100, 20, "FLAGS", MainWin)
-
 cb_multisampling = make checkbox(Flags.x, Flags.y, 150, 20, "--multi-sampling", MainWin)
 cb_fullscreen = make checkbox(Flags.x+250, Flags.y, 150, 20, "--fullscreen", MainWin)
 cb_loop = make checkbox(Flags.x+500, Flags.y, 150, 20, "--loop", MainWin)
@@ -104,6 +100,7 @@ cb_realtime = make checkbox(Flags.x, Flags.y+20, 150, 20, "--realtime", MainWin)
 cb_key = make checkbox(Flags.x+250, Flags.y+20, 150, 20, "--key", MainWin)
 cb_vsync = make checkbox(Flags.x+500, Flags.y+20, 150, 20, "--no-vsync", MainWin)
 
+// Create the Gource, and Exit buttons.
 GourceButton = make button(650,550,100,30,"Gource!",MainWin)
 ExitButton = make button(50,550,100,30,"Exit",MainWin)
 
@@ -149,6 +146,7 @@ repeat
             execute file GG_GourcePath, GG_VCSPath, "", 1
         endif
     endif
+
     GG_MSGLoop()
 until GG_Done = 1
 
