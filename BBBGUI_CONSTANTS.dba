@@ -1,0 +1,711 @@
+//=== EVENT ===========================================================================================
+`Event messages
+#constant WM_NULL                         0x0000
+#constant WM_CREATE                       0x0001
+#constant WM_DESTROY                      0x0002
+#constant WM_MOVE                         0x0003
+#constant WM_SIZE                         0x0005
+#constant WM_ACTIVATE                     0x0006
+#constant WM_SETFOCUS                     0x0007
+#constant WM_KILLFOCUS                    0x0008
+#constant WM_ENABLE                       0x000A
+#constant WM_SETREDRAW                    0x000B
+#constant WM_SETTEXT                      0x000C
+#constant WM_GETTEXT                      0x000D
+#constant WM_GETTEXTLENGTH                0x000E
+#constant WM_PAINT                        0x000F
+#constant WM_CLOSE                        0x0010
+#constant WM_QUERYENDSESSION              0x0011
+#constant WM_QUERYOPEN                    0x0013
+#constant WM_ENDSESSION                   0x0016
+#constant WM_QUIT                         0x0012
+#constant WM_ERASEBKGND                   0x0014
+#constant WM_SYSCOLORCHANGE               0x0015
+#constant WM_SHOWWINDOW                   0x0018
+#constant WM_WININICHANGE                 0x001A
+#constant WM_DEVMODECHANGE                0x001B
+#constant WM_ACTIVATEAPP                  0x001C
+#constant WM_FONTCHANGE                   0x001D
+#constant WM_TIMECHANGE                   0x001E
+#constant WM_CANCELMODE                   0x001F
+#constant WM_SETCURSOR                    0x0020
+#constant WM_MOUSEACTIVATE                0x0021
+#constant WM_CHILDACTIVATE                0x0022
+#constant WM_QUEUESYNC                    0x0023
+#constant WM_GETMINMAXINFO                0x0024
+#constant WM_SIZING                       0x0214
+//=== WINDOW =====================================================================================
+`Window styles
+#constant WS_OVERLAPPED							0x00000000
+#constant WS_MAXIMIZEBOX 						0x00010000
+#constant WS_MINIMIZEBOX 						0x00020000
+#constant WS_THICKFRAME 						0x00040000
+#constant WS_CAPTION 							0x00C00000
+#constant WS_SYSMENU 							0x00080000
+#constant WS_POPUP 								0x800000000
+#constant WS_VISIBLE 							0x100000000
+#constant WS_HSCROLL 							0x00100000
+#constant WS_VSCROLL 							0x00200000
+#constant WS_MINIMIZE 							0x20000000
+#constant WS_MAXIMIZE 							0x01000000
+#constant WS_DLGFRAME 							0x00400000
+#constant WS_DISABLED 							0x08000000
+#constant WS_CLIPSIBLINGS 						0x04000000
+#constant WS_CLIPCHILDREN 						0x02000000
+#constant WS_CHILD 								0x40000000
+#constant WS_BORDER 								0x00800000
+#constant WS_OVERLAPPEDWINDOW 				13565952
+
+`Window ex styles
+#constant WS_EX_DLGMODALFRAME     0x00000001
+#constant WS_EX_NOPARENTNOTIFY    0x00000004
+#constant WS_EX_TOPMOST           0x00000008
+#constant WS_EX_ACCEPTFILES       0x00000010
+#constant WS_EX_TRANSPARENT       0x00000020
+#constant WS_EX_MDICHILD          0x00000040
+#constant WS_EX_TOOLWINDOW        0x00000080
+#constant WS_EX_WINDOWEDGE        0x00000100
+#constant WS_EX_CLIENTEDGE        0x00000200
+#constant WS_EX_CONTEXTHELP       0x00000400
+#constant WS_EX_RIGHT             0x00001000
+#constant WS_EX_LEFT              0x00000000
+#constant WS_EX_RTLREADING        0x00002000
+#constant WS_EX_LTRREADING        0x00000000
+#constant WS_EX_LEFTSCROLLBAR     0x00004000
+#constant WS_EX_RIGHTSCROLLBAR    0x00000000
+#constant WS_EX_CONTROLPARENT     0x00010000
+#constant WS_EX_STATICEDGE        0x00020000
+#constant WS_EX_APPWINDOW         0x00040000
+`Disable inheritence of mirroring by children
+#constant WS_EX_NOINHERITLAYOUT   0x00100000
+`Right to left mirroring
+#constant WS_EX_LAYOUTRTL         0x00400000
+#constant WS_EX_COMPOSITED        0x02000000
+#constant WS_EX_NOACTIVATE 		 0x08000000
+
+//===== REBAR =====================================================================================
+`Rebar styles
+#constant RBS_TOOLTIPS                  0x00000100
+#constant RBS_VARHEIGHT                 0x00000200
+#constant RBS_BANDBORDERS               0x00000400
+#constant RBS_FIXEDORDER                0x00000800
+#constant RBS_REGISTERDROP              0x00001000
+#constant RBS_AUTOSIZE                  0x00002000
+#constant RBS_VERTICALGRIPPER           0x00004000
+//this always has the vertical gripper (default for horizontal mode)
+#constant RBS_DBLCLKTOGGLE              0x00008000
+
+`Rebar band styles
+//break to new line
+#constant RBBS_BREAK          0x00000001
+//band can't be sized
+#constant RBBS_FIXEDSIZE      0x00000002
+//edge around top & bottom of child window
+#constant RBBS_CHILDEDGE      0x00000004
+//don't show
+#constant RBBS_HIDDEN         0x00000008
+//don't show when vertical
+#constant RBBS_NOVERT         0x00000010
+//bitmap doesn't move during band resize
+#constant RBBS_FIXEDBMP       0x00000020
+//allow autosizing of this child vertically
+#constant RBBS_VARIABLEHEIGHT 0x00000040
+//always show the gripper
+#constant RBBS_GRIPPERALWAYS  0x00000080
+//never show the gripper
+#constant RBBS_NOGRIPPER      0x00000100
+//display drop-down button for this band if it's sized smaller than ideal width
+#constant RBBS_USECHEVRON     0x00000200
+//keep band title hidden
+#constant RBBS_HIDETITLE      0x00000400
+//keep band in top row
+#constant RBBS_TOPALIGN       0x00000800
+
+
+//== Scrollbar styles ================================================================================
+#constant SBS_VERT 0x0001
+#constant SBS_HORZ 0x0000
+
+//=== MESSAGEBOX =====================================================================================
+`Messagebox result values
+#constant IDOK          1
+#constant IDCANCEL      2
+#constant IDABORT       3
+#constant IDRETRY       4
+#constant IDIGNORE      5
+#constant IDYES         6
+#constant IDNO          7
+#constant IDCLOSE       8
+#constant IDHELP        9
+#constant IDTRYAGAIN    10
+#constant IDCONTINUE    11
+
+`Messagebox construction values
+#constant MB_OK                       0x00000000
+#constant MB_OKCANCEL                 0x00000001
+#constant MB_ABORTRETRYIGNORE         0x00000002
+#constant MB_YESNOCANCEL              0x00000003
+#constant MB_YESNO                    0x00000004
+#constant MB_RETRYCANCEL              0x00000005
+#constant MB_CANCELTRYCONTINUE        0x00000006
+
+#constant MB_ICONHAND                 0x00000010
+#constant MB_ICONQUESTION             0x00000020
+#constant MB_ICONEXCLAMATION          0x00000030
+#constant MB_ICONASTERISK             0x00000040
+#constant MB_USERICON                 0x00000080
+
+//=== EDITBOX ===========================================================================================
+`Editbox styles
+#constant ES_LEFT             0x0000
+#constant ES_CENTER           0x0001
+#constant ES_RIGHT            0x0002
+#constant ES_MULTILINE        0x0004
+#constant ES_UPPERCASE        0x0008
+#constant ES_LOWERCASE        0x0010
+#constant ES_PASSWORD         0x0020
+#constant ES_AUTOVSCROLL      0x0040
+#constant ES_AUTOHSCROLL      0x0080
+#constant ES_NOHIDESEL        0x0100
+#constant ES_OEMCONVERT       0x0400
+#constant ES_READONLY         0x0800
+#constant ES_WANTRETURN       0x1000
+#constant ES_NUMBER           0x2000
+
+//Scroll Bar Commands (first 8 can be used with EDITBOX SCROLL CONTENT)
+#constant SB_LINEUP           0
+#constant SB_LINELEFT         0
+#constant SB_LINEDOWN         1
+#constant SB_LINERIGHT        1
+#constant SB_PAGEUP           2
+#constant SB_PAGELEFT         2
+#constant SB_PAGEDOWN         3
+#constant SB_PAGERIGHT        3
+#constant SB_THUMBPOSITION    4
+#constant SB_THUMBTRACK       5
+#constant SB_TOP              6
+#constant SB_LEFT             6
+#constant SB_BOTTOM           7
+#constant SB_RIGHT            7
+#constant SB_ENDSCROLL        8
+
+//=== PROGRESSBAR ======================================================================================
+`Progress bar styles
+#constant PBS_SMOOTH              0x01
+#constant PBS_VERTICAL            0x04
+#constant PBS_SMOOTHREVERSE       0x10
+
+//=== LISTVIEW =========================================================================================
+`Listview styles
+#constant LVS_ICON                0x0000
+#constant LVS_REPORT              0x0001
+`not implemented yet
+`#constant LVS_SMALLICON           0x0002
+`#constant LVS_LIST                0x0003
+#constant LVS_TYPEMASK            0x0003
+#constant LVS_SINGLESEL           0x0004
+#constant LVS_SHOWSELALWAYS       0x0008
+#constant LVS_SORTASCENDING       0x0010
+#constant LVS_SORTDESCENDING      0x0020
+#constant LVS_SHAREIMAGELISTS     0x0040
+#constant LVS_NOLABELWRAP         0x0080
+#constant LVS_AUTOARRANGE         0x0100
+#constant LVS_EDITLABELS          0x0200
+#constant LVS_NOSCROLL            0x2000
+#constant LVS_ALIGNTOP            0x0000
+#constant LVS_ALIGNLEFT           0x0800
+#constant LVS_ALIGNMASK           0x0c00
+#constant LVS_OWNERDRAWFIXED      0x0400
+#constant LVS_NOCOLUMNHEADER      0x4000
+#constant LVS_NOSORTHEADER        0x8000
+
+`Listview ex styles
+#constant LVS_EX_GRIDLINES        0x00000001
+#constant LVS_EX_SUBITEMIMAGES    0x00000002
+#constant LVS_EX_CHECKBOXES       0x00000004
+#constant LVS_EX_TRACKSELECT      0x00000008
+#constant LVS_EX_HEADERDRAGDROP   0x00000010
+//applies to report mode only
+#constant LVS_EX_FULLROWSELECT    0x00000020
+#constant LVS_EX_ONECLICKACTIVATE 0x00000040
+#constant LVS_EX_TWOCLICKACTIVATE 0x00000080
+#constant LVS_EX_FLATSB           0x00000100
+#constant LVS_EX_REGIONAL         0x00000200
+//listview does InfoTips for you
+#constant LVS_EX_INFOTIP          0x00000400
+#constant LVS_EX_UNDERLINEHOT     0x00000800
+#constant LVS_EX_UNDERLINECOLD    0x00001000
+#constant LVS_EX_MULTIWORKAREAS   0x00002000
+//listview unfolds partly hidden labels if it does not have infotip text
+#constant LVS_EX_LABELTIP         0x00004000
+//border selection style instead of highlight
+#constant LVS_EX_BORDERSELECT     0x00008000
+#constant LVS_EX_DOUBLEBUFFER     0x00010000
+#constant LVS_EX_HIDELABELS       0x00020000
+#constant LVS_EX_SINGLEROW        0x00040000
+//Icons automatically snap to grid.
+#constant LVS_EX_SNAPTOGRID       0x00080000
+//Also changes overlay rendering to top right for icon mode.
+#constant LVS_EX_SIMPLESELECT     0x00100000
+//Icons are lined up in columns that use up the whole view area.
+#constant LVS_EX_JUSTIFYCOLUMNS   0x00200000
+//Background is painted by the parent via WM_PRINTCLIENT
+#constant LVS_EX_TRANSPARENTBKGND 0x00400000
+//Enable shadow text on transparent backgrounds only (useful with bitmaps)
+#constant LVS_EX_TRANSPARENTSHADOWTEXT 0x00800000
+//Icons automatically arrange if no icon positions have been set
+#constant LVS_EX_AUTOAUTOARRANGE  0x01000000
+//Display column header in all view modes
+#constant LVS_EX_HEADERINALLVIEWS 0x02000000
+#constant LVS_EX_AUTOCHECKSELECT  0x08000000
+#constant LVS_EX_AUTOSIZECOLUMNS  0x10000000
+#constant LVS_EX_COLUMNSNAPPOINTS 0x40000000
+#constant LVS_EX_COLUMNOVERFLOW   0x80000000
+
+`special 'width 'values when using LISTVIEW SET COLUMN WIDTH command
+#constant LVSCW_AUTOSIZE              -1
+#constant LVSCW_AUTOSIZE_USEHEADER    -2
+
+`listview item states - for use with LISTVIEW GET ITEM STATE command
+#constant LVIS_FOCUSED            0x0001
+#constant LVIS_SELECTED           0x0002
+#constant LVIS_CUT                0x0004
+#constant LVIS_DROPHILITED        0x0008
+#constant LVIS_GLOW               0x0010
+#constant LVIS_ACTIVATING         0x0020
+#constant LVIS_OVERLAYMASK        0x0F00
+#constant LVIS_STATEIMAGEMASK     0xF000
+
+//=== COMBOBOX =============================================================================================
+`ComboBox styles
+#constant CBS_SIMPLE            0x0001
+#constant CBS_DROPDOWN          0x0002
+#constant CBS_DROPDOWNLIST      0x0003
+#constant CBS_OWNERDRAWFIXED    0x0010
+#constant CBS_OWNERDRAWVARIABLE 0x0020
+#constant CBS_AUTOHSCROLL       0x0040
+#constant CBS_OEMCONVERT        0x0080
+#constant CBS_SORT              0x0100
+#constant CBS_HASSTRINGS        0x0200
+#constant CBS_NOINTEGRALHEIGHT  0x0400
+#constant CBS_DISABLENOSCROLL   0x0800
+#constant CBS_UPPERCASE         0x2000
+#constant CBS_LOWERCASE         0x4000
+
+`Combobox file list styles
+#constant DDL_READWRITE       0x0000
+#constant DDL_READONLY        0x0001
+#constant DDL_HIDDEN          0x0002
+#constant DDL_SYSTEM          0x0004
+#constant DDL_DIRECTORY       0x0010
+#constant DDL_ARCHIVE         0x0020
+
+#constant DDL_POSTMSGS        0x2000
+#constant DDL_DRIVES          0x4000
+#constant DDL_EXCLUSIVE       0x8000
+
+`Combo Box messages
+#constant CB_GETEDITSEL               0x0140
+#constant CB_LIMITTEXT                0x0141
+#constant CB_SETEDITSEL               0x0142
+#constant CB_ADDSTRING                0x0143
+#constant CB_DELETESTRING             0x0144
+#constant CB_DIR                      0x0145
+#constant CB_GETCOUNT                 0x0146
+#constant CB_GETCURSEL                0x0147
+#constant CB_GETLBTEXT                0x0148
+#constant CB_GETLBTEXTLEN             0x0149
+#constant CB_INSERTSTRING             0x014A
+#constant CB_RESETCONTENT             0x014B
+#constant CB_FINDSTRING               0x014C
+#constant CB_SELECTSTRING             0x014D
+#constant CB_SETCURSEL                0x014E
+#constant CB_SHOWDROPDOWN             0x014F
+#constant CB_GETITEMDATA              0x0150
+#constant CB_SETITEMDATA              0x0151
+#constant CB_GETDROPPEDCONTROLRECT    0x0152
+#constant CB_SETITEMHEIGHT            0x0153
+#constant CB_GETITEMHEIGHT            0x0154
+#constant CB_SETEXTENDEDUI            0x0155
+#constant CB_GETEXTENDEDUI            0x0156
+#constant CB_GETDROPPEDSTATE          0x0157
+#constant CB_FINDSTRINGEXACT          0x0158
+#constant CB_SETLOCALE                0x0159
+#constant CB_GETLOCALE                0x015A
+#constant CB_GETTOPINDEX              0x015b
+#constant CB_SETTOPINDEX              0x015c
+#constant CB_GETHORIZONTALEXTENT      0x015d
+#constant CB_SETHORIZONTALEXTENT      0x015e
+#constant CB_GETDROPPEDWIDTH          0x015f
+#constant CB_SETDROPPEDWIDTH          0x0160
+#constant CB_INITSTORAGE              0x0161
+
+//=== TAB ========================================================================================================
+`Tab styles
+//assumes multiline tab
+#constant TCS_SCROLLOPPOSITE      0x0001
+#constant TCS_BOTTOM              0x0002
+#constant TCS_RIGHT               0x0002
+//allow multi-select in button mode
+#constant TCS_MULTISELECT         0x0004
+#constant TCS_FLATBUTTONS         0x0008
+#constant TCS_FORCEICONLEFT       0x0010
+#constant TCS_FORCELABELLEFT      0x0020
+#constant TCS_HOTTRACK            0x0040
+#constant TCS_VERTICAL            0x0080
+#constant TCS_TABS                0x0000
+#constant TCS_BUTTONS             0x0100
+#constant TCS_SINGLELINE          0x0000
+#constant TCS_MULTILINE           0x0200
+#constant TCS_RIGHTJUSTIFY        0x0000
+#constant TCS_FIXEDWIDTH          0x0400
+#constant TCS_RAGGEDRIGHT         0x0800
+#constant TCS_FOCUSONBUTTONDOWN   0x1000
+#constant TCS_OWNERDRAWFIXED      0x2000
+#constant TCS_TOOLTIPS            0x4000
+#constant TCS_FOCUSNEVER          0x8000
+
+`Tab ex styles
+#constant TCS_EX_FLATSEPARATORS   0x00000001
+#constant TCS_EX_REGISTERDROP     0x00000002
+
+//=== TOOLBAR ================================================================================================
+`Toolbar styles
+#constant TBSTYLE_TOOLTIPS        0x0100
+#constant TBSTYLE_WRAPABLE        0x0200
+#constant TBSTYLE_ALTDRAG         0x0400
+#constant TBSTYLE_FLAT            0x0800
+#constant TBSTYLE_LIST            0x1000
+#constant TBSTYLE_CUSTOMERASE     0x2000
+#constant TBSTYLE_REGISTERDROP    0x4000
+#constant TBSTYLE_TRANSPARENT     0x8000
+
+`Toolbar ex styles
+#constant TBSTYLE_EX_MIXEDBUTTONS             0x00000008
+//don't show partially obscured buttons
+#constant TBSTYLE_EX_HIDECLIPPEDBUTTONS       0x00000010
+//Double Buffer the toolbar
+#constant TBSTYLE_EX_DOUBLEBUFFER             0x00000080
+#constant TBSTYLE_EX_DRAWDDARROWS 0x00000001
+
+`Toolbar button styles
+#constant BTNS_BUTTON     0x0000
+#constant BTNS_SEP        0x0001
+#constant BTNS_CHECK      0x0002
+#constant BTNS_GROUP      0x0004
+#constant BTNS_DROPDOWN   0x0008
+//automatically calculate the cx of the button
+#constant BTNS_AUTOSIZE   0x0010
+//this button should not have accel prefix
+#constant BTNS_NOPREFIX   0x0020
+//ignored unless TBSTYLE_EX_MIXEDBUTTONS is set
+#constant BTNS_SHOWTEXT   0x0040        
+// draw drop-down arrow, but without split arrow section
+#constant BTNS_WHOLEDROPDOWN  0x0080
+
+
+//=== COMMON CONTROL STYLES ================================================================================
+#constant CCS_TOP                 0x00000001
+#constant CCS_NOMOVEY             0x00000002
+#constant CCS_BOTTOM              0x00000003
+#constant CCS_NORESIZE            0x00000004
+#constant CCS_NOPARENTALIGN       0x00000008
+#constant CCS_ADJUSTABLE          0x00000020
+#constant CCS_NODIVIDER           0x00000040
+#constant CCS_VERT                0x00000080
+
+
+//=== TOOLTIPS ==================================================================
+//Tooltip styles
+#constant TTS_ALWAYSTIP           0x01
+#constant TTS_NOPREFIX            0x02
+#constant TTS_NOANIMATE           0x10
+#constant TTS_NOFADE              0x20
+#constant TTS_BALLOON             0x40
+#constant TTS_CLOSE               0x80
+
+//Tooltip images
+#constant TTI_NONE                0
+#constant TTI_INFO                1
+#constant TTI_WARNING             2
+#constant TTI_ERROR               3
+#constant TTI_INFO_LARGE          4
+#constant TTI_WARNING_LARGE       5
+#constant TTI_ERROR_LARGE         6
+
+//Tooltip duration - for use with tooltip set delay time command
+#constant TTDT_AUTOMATIC          0
+#constant TTDT_RESHOW             1
+#constant TTDT_AUTOPOP            2
+#constant TTDT_INITIAL            3
+
+//==Trackbar====================================================================
+//Trackbar styles
+#constant TBS_AUTOTICKS           0x0001
+#constant TBS_VERT                0x0002
+#constant TBS_HORZ                0x0000
+#constant TBS_TOP                 0x0004
+#constant TBS_BOTTOM              0x0000
+#constant TBS_LEFT                0x0004
+#constant TBS_RIGHT               0x0000
+#constant TBS_BOTH                0x0008
+#constant TBS_NOTICKS             0x0010
+#constant TBS_ENABLESELRANGE      0x0020
+#constant TBS_FIXEDLENGTH         0x0040
+#constant TBS_NOTHUMB             0x0080
+#constant TBS_TOOLTIPS            0x0100
+#constant TBS_REVERSED            0x0200
+
+//=Static windows (labels and static images) ===================================
+//Static styles
+#constant SS_LEFT             0x00000000
+#constant SS_CENTER           0x00000001
+#constant SS_RIGHT            0x00000002
+#constant SS_ICON             0x00000003
+#constant SS_BLACKRECT        0x00000004
+#constant SS_GRAYRECT         0x00000005
+#constant SS_WHITERECT        0x00000006
+#constant SS_BLACKFRAME       0x00000007
+#constant SS_GRAYFRAME        0x00000008
+#constant SS_WHITEFRAME       0x00000009
+#constant SS_USERITEM         0x0000000A
+#constant SS_SIMPLE           0x0000000B
+#constant SS_LEFTNOWORDWRAP   0x0000000C
+#constant SS_OWNERDRAW        0x0000000D
+#constant SS_BITMAP           0x0000000E
+#constant SS_ENHMETAFILE      0x0000000F
+#constant SS_ETCHEDHORZ       0x00000010
+#constant SS_ETCHEDVERT       0x00000011
+#constant SS_ETCHEDFRAME      0x00000012
+#constant SS_TYPEMASK         0x0000001F
+#constant SS_REALSIZECONTROL  0x00000040
+// Don't do "&" character translation
+#constant SS_NOPREFIX         0x00000080 
+#constant SS_NOTIFY           0x00000100
+#constant SS_CENTERIMAGE      0x00000200
+#constant SS_RIGHTJUST        0x00000400
+#constant SS_REALSIZEIMAGE    0x00000800
+#constant SS_SUNKEN           0x00001000
+#constant SS_EDITCONTROL      0x00002000
+#constant SS_ENDELLIPSIS      0x00004000
+#constant SS_PATHELLIPSIS     0x00008000
+#constant SS_WORDELLIPSIS     0x0000C000
+#constant SS_ELLIPSISMASK     0x0000C000
+
+
+//==UPDOWN CONTROL==============================================================
+#constant UDS_WRAP                0x0001
+//#define UDS_SETBUDDYINT         0x0002
+#constant UDS_ALIGNRIGHT          0x0004
+#constant UDS_ALIGNLEFT           0x0008
+//#define UDS_AUTOBUDDY           0x0010
+#constant UDS_ARROWKEYS           0x0020
+#constant UDS_HORZ                0x0040
+#constant UDS_NOTHOUSANDS         0x0080
+//#define UDS_HOTTRACK            0x0100
+
+//===WEB BROWSER CONTROL==========================================================================================
+//Status id's
+//this is sent before navigation to give a chance to abort
+#constant DISPID_BEFORENAVIGATE     100 
+//in async, this is sent when we have enough to show
+#constant DISPID_NAVIGATECOMPLETE   101
+#constant DISPID_STATUSTEXTCHANGE   102
+#constant DISPID_QUIT               103
+#constant DISPID_DOWNLOADCOMPLETE   104
+#constant DISPID_COMMANDSTATECHANGE 105
+#constant DISPID_DOWNLOADBEGIN      106
+//sent when a new window should be created
+#constant DISPID_NEWWINDOW          107   
+//sent when download progress is updated
+#constant DISPID_PROGRESSCHANGE     108 
+//sent when main window has been moved
+#constant DISPID_WINDOWMOVE         109 
+//sent when main window has been sized
+#constant DISPID_WINDOWRESIZE       110  
+//sent when main window has been activated
+#constant DISPID_WINDOWACTIVATE     111 
+//sent when the PutProperty method is called
+#constant DISPID_PROPERTYCHANGE     112 
+//sent when the document title changes
+#constant DISPID_TITLECHANGE        113
+//sent when the top level window icon may have changed.
+#constant DISPID_TITLEICONCHANGE    114
+
+#constant DISPID_FRAMEBEFORENAVIGATE    200
+#constant DISPID_FRAMENAVIGATECOMPLETE  201
+#constant DISPID_FRAMENEWWINDOW         204
+
+//hyperlink clicked on
+#constant DISPID_BEFORENAVIGATE2              250
+#constant DISPID_NEWWINDOW2                   251
+//UIActivate new document
+#constant DISPID_NAVIGATECOMPLETE2            252           
+#constant DISPID_ONQUIT                       253
+//sent when the window goes visible/hidden
+#constant DISPID_ONVISIBLE                    254           
+#constant DISPID_ONTOOLBAR                    255           // sent when the toolbar should be shown/hidden
+#constant DISPID_ONMENUBAR                    256           // sent when the menubar should be shown/hidden
+#constant DISPID_ONSTATUSBAR                  257           // sent when the statusbar should be shown/hidden
+#constant DISPID_ONFULLSCREEN                 258           // sent when kiosk mode should be on/off
+#constant DISPID_DOCUMENTCOMPLETE             259           // new document goes ReadyState_Complete
+#constant DISPID_ONTHEATERMODE                260           // sent when theater mode should be on/off
+#constant DISPID_ONADDRESSBAR                 261           // sent when the address bar should be shown/hidden
+#constant DISPID_WINDOWSETRESIZABLE           262           // sent to set the style of the host window frame
+#constant DISPID_WINDOWCLOSING                263           // sent before script window.close closes the window 
+#constant DISPID_WINDOWSETLEFT                264           // sent when the put_left method is called on the WebOC
+#constant DISPID_WINDOWSETTOP                 265           // sent when the put_top method is called on the WebOC
+#constant DISPID_WINDOWSETWIDTH               266           // sent when the put_width method is called on the WebOC
+#constant DISPID_WINDOWSETHEIGHT              267           // sent when the put_height method is called on the WebOC 
+#constant DISPID_CLIENTTOHOSTWINDOW           268           // sent during window.open to request conversion of dimensions
+#constant DISPID_SETSECURELOCKICON            269           // sent to suggest the appropriate security icon to show
+#constant DISPID_FILEDOWNLOAD                 270           // Fired to indicate the File Download dialog is opening
+#constant DISPID_NAVIGATEERROR                271           // Fired to indicate the a binding error has occured
+#constant DISPID_PRIVACYIMPACTEDSTATECHANGE   272           // Fired when the user's browsing experience is impacted
+#constant DISPID_NEWWINDOW3                   273
+#constant DISPID_VIEWUPDATE                   281           // Fired when the contents of a shell browser window change
+#constant DISPID_SETPHISHINGFILTERSTATUS      282           // Fired by the Phishing Filter API to signal what state the analysis is in
+#constant DISPID_WINDOWSTATECHANGED           283           // Fired to indicate that the browser window's visibility or enabled state has changed
+
+// Printing events
+#constant DISPID_PRINTTEMPLATEINSTANTIATION   225           // Fired to indicate that a print template is instantiated
+#constant DISPID_PRINTTEMPLATETEARDOWN        226           // Fired to indicate that a print templete is completely gone 
+#constant DISPID_UPDATEPAGESTATUS             227           // Fired to indicate that the spooling status has changed
+
+
+//LAST MODIFIED CONTROL==================================================================================
+//Combobox2 Events
+`The user activated the drop-down list.
+#constant CBENF_KILLFOCUS         1
+`The user pressed ESC.
+#constant CBENF_RETURN            2
+`The edit box lost the keyboard focus.
+#constant CBENF_ESCAPE            3
+`The user completed the edit operation by pressing ENTER.
+#constant CBENF_DROPDOWN          4
+
+//Combobox events
+`The CBN_ERRSPACE notification message is sent when a combo box cannot allocate enough memory to meet a specific request
+#constant CBN_ERRSPACE        -1
+`The CBN_SELCHANGE notification message is sent when the user changes the current selection in the list box of a combo box
+#constant CBN_SELCHANGE       1
+`The CBN_DBLCLK notification message is sent when the user double-clicks a string in the list box of a combo box.
+#constant CBN_DBLCLK          2
+`The CBN_SETFOCUS notification message is sent when a combo box receives the keyboard focus
+#constant CBN_SETFOCUS        3
+`The CBN_KILLFOCUS notification message is sent when a combo box loses the keyboard focus
+#constant CBN_KILLFOCUS       4
+`The CBN_EDITCHANGE notification message is sent after the user has taken an action that may have altered the text in the edit control portion of a combo box.
+#constant CBN_EDITCHANGE      5
+`The CBN_EDITUPDATE notification message is sent when the edit control portion of a combo box is about to display altered text
+#constant CBN_EDITUPDATE      6
+`The CBN_DROPDOWN notification message is sent when the list box of a combo box is about to be made visible.
+#constant CBN_DROPDOWN        7
+`The CBN_CLOSEUP notification message is sent when the list box of a combo box has been closed.
+#constant CBN_CLOSEUP         8
+`The CBN_SELENDOK notification message is sent when the user selects a list item, or selects an item and then closes the list
+#constant CBN_SELENDOK        9
+`The CBN_SELENDCANCEL notification message is sent when the user selects an item, but then selects another control or closes the dialog box.
+#constant CBN_SELENDCANCEL    10
+
+//IMAGELIST COLOR STYLES
+#constant LR_DEFAULTCOLOR     0x00000000
+#constant LR_MONOCHROME       0x00000001
+#constant LR_COLOR            0x00000002
+#constant LR_COPYRETURNORG    0x00000004
+#constant LR_COPYDELETEORG    0x00000008
+#constant LR_LOADFROMFILE     0x00000010
+#constant LR_LOADTRANSPARENT  0x00000020
+#constant LR_DEFAULTSIZE      0x00000040
+#constant LR_VGACOLOR         0x00000080
+#constant LR_LOADMAP3DCOLORS  0x00001000
+#constant LR_CREATEDIBSECTION 0x00002000
+#constant LR_COPYFROMRESOURCE 0x00004000
+#constant LR_SHARED           0x00008000
+
+
+//FONT =========================================================================================================
+`Font charsets
+#constant ANSI_CHARSET            0
+#constant DEFAULT_CHARSET         1
+#constant SYMBOL_CHARSET          2
+#constant SHIFTJIS_CHARSET        128
+#constant HANGEUL_CHARSET         129
+#constant HANGUL_CHARSET          129
+#constant GB2312_CHARSET          134
+#constant CHINESEBIG5_CHARSET     136
+#constant OEM_CHARSET             255
+#constant JOHAB_CHARSET           130
+#constant HEBREW_CHARSET          177
+#constant ARABIC_CHARSET          178
+#constant GREEK_CHARSET           161
+#constant TURKISH_CHARSET         162
+#constant VIETNAMESE_CHARSET      163
+#constant THAI_CHARSET            222
+#constant EASTEUROPE_CHARSET      238
+#constant RUSSIAN_CHARSET         204
+#constant MAC_CHARSET             77
+#constant BALTIC_CHARSET          186
+
+`Font family
+#constant FS_LATIN1               0x00000001
+#constant FS_LATIN2               0x00000002
+#constant FS_CYRILLIC             0x00000004
+#constant FS_GREEK                0x00000008
+#constant FS_TURKISH              0x00000010
+#constant FS_HEBREW               0x00000020
+#constant FS_ARABIC               0x00000040
+#constant FS_BALTIC               0x00000080
+#constant FS_VIETNAMESE           0x00000100
+#constant FS_THAI                 0x00010000
+#constant FS_JISJAPAN             0x00020000
+#constant FS_CHINESESIMP          0x00040000
+#constant FS_WANSUNG              0x00080000
+#constant FS_CHINESETRAD          0x00100000
+#constant FS_JOHAB                0x00200000
+#constant FS_SYMBOL               0x80000000
+`Don't care or don't know
+#constant FF_DONTCARE         (0<<4)
+`Variable stroke width, serifed (Times Roman, Century Schoolbook, etc. )
+#constant FF_ROMAN            (1<<4)
+`Variable stroke width, sans-serifed. (Helvetica, Swiss, etc. )                               
+#constant FF_SWISS            (2<<4)
+`Constant stroke width, serifed or sans-serifed. (Pica, Elite, Courier, etc. )                       
+#constant FF_MODERN           (3<<4)
+`Cursive, etc.                                 
+#constant FF_SCRIPT           (4<<4)
+`Old English, etc.
+#constant FF_DECORATIVE       (5<<4)
+
+`Font Weights
+#constant FW_DONTCARE         0
+#constant FW_THIN             100
+#constant FW_EXTRALIGHT       200
+#constant FW_LIGHT            300
+#constant FW_NORMAL           400
+#constant FW_MEDIUM           500
+#constant FW_SEMIBOLD         600
+#constant FW_BOLD             700
+#constant FW_EXTRABOLD        800
+#constant FW_HEAVY            900
+
+//LAYERED WINDOW
+`Styles
+#constant LWA_COLORKEY            0x00000001
+#constant LWA_ALPHA               0x00000002
+
+//FLASH WINDOW FLAGS
+`Flash both the window caption and taskbar button. This is equivalent to setting the FLASHW_CAPTION || FLASHW_TRAY flags.
+#constant FLASHW_ALL 0x00000003
+`Flash the window caption
+#constant FLASHW_CAPTION 0x00000001
+`Stop flashing. The system restores the window to its original state
+#constant FLASHW_STOP 0
+`Flash continuously, until the FLASHW_STOP flag is set
+#constant FLASHW_TIMER 0x00000004
+`Flash continuously until the window comes to the foreground.
+#constant FLASHW_TIMERNOFG 0x0000000C
+`Flash the taskbar button
+#constant FLASHW_TRAY 0x00000002
+
+ 

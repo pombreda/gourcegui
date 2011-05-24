@@ -5,11 +5,9 @@ project name=GourceGUI
 
 ; **** source file information ****
 main=main.dba
-LineMain=51
-include1=fileselector.dba
-LineInclude1=19
-include2=module_ui.dba
-LineInclude2=19
+LineMain=17
+include1=BBBGUI_CONSTANTS.dba
+LineInclude1=0
 
 ; **** Executable Information  ***
 ; build types: exe, media, installer, alone
@@ -29,7 +27,7 @@ CLI=NO
 CommandLineArguments=
 
 ; **** display mode information ****
-app title=GourceGUI
+app title=GourceGUI v0.2
 
 ; graphics mode options: fullscreen, window, desktop, fulldesktop, hidden
 graphics mode=window
@@ -52,8 +50,8 @@ media root path=C:\Users\Martin\Documents\DBProjects\gourcegui\
 VerComments=
 VerCompany=
 VerFileDesc=
-VerFileNumber=v1.0
-VerInternal=v1.0
+VerFileNumber=v0.2
+VerInternal=v0.2
 VerCopyright=
 VerTrademark=
 VerFilename=
