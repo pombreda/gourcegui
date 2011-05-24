@@ -16,6 +16,12 @@
 // You should have received a copy of the GNU General Public License
 // along with GourceGUI.  If not, see <http://www.gnu.org/licenses/>.
 
+disable escapekey
+
+type coord_type
+    x as integer
+    y as integer
+endtype
 
 // Global EXIT flag.
 global GG_Done as boolean
@@ -25,16 +31,26 @@ GG_Done = 0
 global GG_GourcePath as string
 global GG_VCSPath as string
 global GG_LogoPath as string
-//GG_GourcePath = "c:\users\martin\downloads\gource-0.34.win32"
-//GG_VCSPath = "c:\users\martin\documents\dbprojects\openfps"
-//GG_LogoPath = "c:\users\martin\downloads\gource-0.34.win32\fpslogo.png"
 
 // Globals for the PATH button indexes.
 global GPButton as integer
 global VPButton as integer
 global LPButton as integer
+global GPEditBox as integer
+global VPEditBox as integer
+global LPEditBox as integer
+global GPPos as coord_type
+global VPPos as coord_type
+global LPPos as coord_type
+GPPos.x = 80
+GPPos.y = 50
+VPPos.x = GPPos.x
+VPPos.y = GPPos.y + 50
+LPPos.x = GPPos.x
+LPPos.y = VPPos.y + 50
 
 global GourceButton as integer
+global ExitButton as integer
 
 // Timer and Mouse globals.
 global difTime as integer
@@ -52,102 +68,60 @@ sync
 
 start bbb gui
 
-global MainWin
+global MainWin as integer
 MainWin = get dbpro window() : set main window MainWin
-//cb = make checkbox(100,100,100,15,"Checkbox",MainWin)
-f$ = ""
-egp = make editbox(10,10,400,20,ES_READONLY,MainWin) : window set text egp,"This is read only editbox"
-but = make button(420,9,30,20,"...",MainWin)
 
+GPLabel = make label(GPPos.x,GPPos.y,500,20,"Gource Executable",MainWin)
+GPEditBox = make editbox(GPPos.x,GPPos.y+20,600,20,ES_READONLY,MainWin) : window set text GPEditBox, GG_GourcePath
+GPButton = make button(GPPos.x+600,GPPos.y+19,20,20,"...",MainWin)
+VPLabel = make label(VPPos.x,VPPos.y,500,20,"VCS Log Path",MainWin)
+VPEditBox = make editbox(VPPos.x,VPPos.y+20,600,20,ES_READONLY,MainWin) : window set text VPEditBox, GG_VCSPath
+VPButton = make button(VPPos.x+600,VPPos.y+19,20,20,"...",MainWin)
+LPLabel = make label(LPPos.x,LPPos.y,500,20,"Logo Image",MainWin)
+LPEditBox = make editbox(LPPos.x,LPPos.y+20,600,20,ES_READONLY,MainWin) : window set text LPEditBox, GG_LogoPath
+LPButton = make button(LPPos.x+600,LPPos.y+19,20,20,"...",MainWin)
+
+GourceButton = make button(650,550,100,30,"Gource!",MainWin)
+ExitButton = make button(50,550,100,30,"Exit",MainWin)
+
+// Main Loop
 repeat
-    if button clicked(but)
-        f$ = open file dialog("Locate gource.exe","gource.exe|gource.exe")
+    if button clicked(GPButton)
+        GG_GourcePath = open file dialog("Locate gource.exe","gource.exe|gource.exe")
+        window set text GPEditBox, GG_GourcePath
     endif
-until returnkey()
+    if button clicked(VPButton)
+        GG_VCSPath = open file dialog("Locate CVS folder...","")
+        window set text VPEditBox, GG_VCSPath
+    endif
+    if button clicked(LPButton)
+        GG_LogoPath = open file dialog("Locate Logo image...","PNG|*.png")
+        window set text LPEditBox, GG_LogoPath
+    endif
+    if button clicked(ExitButton)
+        a = make message box("Really Quit?","GourceGUI",MB_YESNO)
+        if a = IDYES then GG_Done = 1
+    endif
+    GG_MSGLoop()
+    nice sleep 100
+until GG_Done = 1
 
+// End the program...
 end bbb gui
 end
 
-// Init UI.
-UI_Init()
-GPButton = UI_NewButton(10, 10, 16, 16, "", ACTION_SETGOURCEPATH)
-VPButton = UI_NewButton(10, 30, 16, 16, "", ACTION_SETVCSPATH)
-LPButton = UI_NewButton(10, 50, 16, 16, "", ACTION_SETLOGOPATH)
-
-GourceButton = UI_NewButton(650, 330, 64, 16, "Gource!", ACTION_GOURCE)
-ExitButton = UI_NewButton(83,330,64,16,"Exit", ACTION_EXIT)
-
-// Start the MAIN loop.
-oldTime = hitimer()
-while GG_Done = 0
-    GG_Update()
-    
-    GG_Draw()
-    ink rgb(127,127,127),0
-    box 0,0,800,17
-    ink rgb(255,255,255),0
-    line 0,18,800,18
-    ink rgb(0,0,0),0
-    text 3, 1, "GourceGUI v0.1"
-    ink rgb(255,255,255),0
-    text 2, 0, "GourceGUI v0.1"
-    sync
-endwhile
-
-UI_Terminate()
-end
-
-// Update GourceGUI functionality.
-function GG_Update()
-    difTime = hitimer() - oldTime
-    oldTime = hitimer()
-    MSX = mousex()
-    MSY = mousey()
-    MCLK = mouseclick()
-    UI_UpdateButtons()
-endfunction
-
-// Draw the screen.
-function GG_Draw()
-    cls rgb(95,95,95)
-    GG_DrawPaths(75, 250)
-    UI_DrawButtons()
-endfunction
-
-// Draw the PATHs box.
-function GG_DrawPaths(x as integer, y as integer)
-    MaxLen as integer
-    MaxLen = 65
-    GPath as string
-    VPath as string
-    LPath as string
-    GPath = GG_GourcePath
-    VPath = GG_VCSPath
-    LPath = GG_LogoPath
-    if len(GPath) > MaxLen then GPath = "..." + right$(GG_GourcePath, MaxLen-3)
-    if len(VPath) > MaxLen then VPath = "..." + right$(GG_VCSPath, MaxLen-3)
-    if len(LPath) > MaxLen then LPath = "..." + right$(GG_LogoPath, MaxLen-3)
-    ink rgb(0,0,0),0
-    box x-4,y-4,x+657,y+69
-    box outline x-8,y-8,x+652,y+64,rgb(255,255,255)
-    ink rgb(127,127,127),0
-    box x-7,y-7,x+652,y+64
-    UI_MoveButton(GPButton, x, y)
-    UI_MoveButton(VPButton, x, y+20)
-    UI_MoveButton(LPButton, x, y+40)
-    ink rgb(0,0,0), 0
-    text x+21, y+2, "GOURCE PATH: "
-    text x+21, y+22, "VCS PATH   : "
-    text x+21, y+42, "LOGO PATH  : "
-    text x+126, y+2, GPath
-    text x+126, y+22, VPath
-    text x+126, y+42, LPath
-    ink rgb(223,223,223), 0
-    text x+20, y+1, "GOURCE PATH: "
-    text x+20, y+21, "VCS PATH   : "
-    text x+20, y+41, "LOGO PATH  : "
-    ink rgb(255,255,0), 0
-    text x+125, y+1, GPath
-    text x+125, y+21, VPath
-    text x+125, y+41, LPath
+// Message Loop
+// Checks for WM_CLOSE message on the main window...
+function GG_MSGLoop()
+    repeat
+        get event
+        h = event get handle()
+        m = event get message()
+        if h = get main window()
+            if m = WM_CLOSE
+                a = make message box("Really Quit?","GourceGUI",MB_YESNO)
+                if a = IDYES then GG_Done = 1
+            endif
+        endif
+    until m = 0
 endfunction
