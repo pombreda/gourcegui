@@ -41,3 +41,18 @@ function SetDefaultOptions()
     COLOR_Background = rgb(0,0,0)
     COLOR_Text = rgb(255,255,255)
 endfunction
+
+// Parse all the Options into a string.
+function ParseOptions()
+    GG_Options = ""
+    if FLAG_MultiSampling then GG_Options = GG_Options + "--multi-sampling "
+    if FLAG_Fullscreen
+        GG_Options = GG_Options + "-f "
+    else
+        GG_Options = GG_Options + "-w "
+    endif
+    if FLAG_Key then GG_Options = GG_Options + "--key "
+    if FLAG_Loop then GG_Options = GG_Options + "--loop "
+    if FLAG_Realtime then GG_Options = GG_Options + "--realtime "
+    if FLAG_NoVSync then GG_Options = GG_Options + "--no-vsync "
+endfunction
