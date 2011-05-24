@@ -5,7 +5,7 @@ project name=GourceGUI
 
 ; **** source file information ****
 main=main.dba
-LineMain=17
+LineMain=148
 include1=BBBGUI_CONSTANTS.dba
 LineInclude1=0
 
@@ -50,8 +50,8 @@ media root path=C:\Users\Martin\Documents\DBProjects\gourcegui\
 VerComments=
 VerCompany=
 VerFileDesc=
-VerFileNumber=v0.2
-VerInternal=v0.2
+VerFileNumber=v1.0
+VerInternal=v1.0
 VerCopyright=
 VerTrademark=
 VerFilename=
