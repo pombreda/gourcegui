@@ -17,6 +17,9 @@
 // along with GourceGUI.  If not, see <http://www.gnu.org/licenses/>.
 
 
+// Shows debug info if set to 1.
+#constant GG_DEBUG     0
+
 // Disable quitting with ESCAPE.
 disable escapekey
 
@@ -33,6 +36,9 @@ GG_Done = 0
 // String containing the parsed options.
 global GG_Options as string
 GG_Options = ""
+
+// Initialize the Options.
+InitOptions()
 
 // Strings to hold the various paths.
 global GG_GourcePath as string
@@ -137,17 +143,48 @@ repeat
         GG_BGPath = open file dialog("Select background image...","PNG|*.png")
         window set text BPEditBox, GG_BGPath
     endif
+    
+    // Update FLAGS based on CheckBox info.
+    cbs = checkbox get state(cb_multisampling)
+    if cbs = 2 then FLAG_MultiSampling = 1
+    if cbs = 3 then FLAG_MultiSampling = 0
+    cbs = checkbox get state(cb_key)
+    if cbs = 2 then FLAG_Key = 1
+    if cbs = 3 then FLAG_Key = 0
+    cbs = checkbox get state(cb_fullscreen)
+    if cbs = 2 then FLAG_Fullscreen = 1
+    if cbs = 3 then FLAG_Fullscreen = 0
+    cbs = checkbox get state(cb_realtime)
+    if cbs = 2 then FLAG_Realtime = 1
+    if cbs = 3 then FLAG_Realtime = 0
+    cbs = checkbox get state(cb_loop)
+    if cbs = 2 then FLAG_Loop = 1
+    if cbs = 3 then FLAG_Loop = 0
+    cbs = checkbox get state(cb_vsync)
+    if cbs = 2 then FLAG_NoVSync = 1
+    if cbs = 3 then FLAG_NoVSync = 0
+    
+    // Handle the Exit and Gource! buttons.    
     if button clicked(ExitButton)
         a = make message box("Really Quit?","GourceGUI",MB_YESNO)
         if a = IDYES then GG_Done = 1
     endif
     if button clicked(GourceButton)
         if GG_GourcePath <> "" and GG_VCSPath <> ""
-            execute file GG_GourcePath, GG_VCSPath, "", 1
+            ParseOptions()
+            execute file GG_GourcePath, GG_Options+GG_VCSPath, "", 1
         endif
     endif
 
     GG_MSGLoop()
+    
+    if GG_DEBUG
+        ParseOptions()
+        cls rgb(239,239,239)
+        ink rgb(0,0,0)
+        text 0,0,GG_Options
+        sync
+    endif
 until GG_Done = 1
 
 // End the program...
