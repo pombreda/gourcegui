@@ -19,7 +19,9 @@
 
 // Initialize the Options.
 function InitOptions()
-    global OPTION_Seconds as float
+    global OPTION_SecsPerDay as float
+    global OPTION_AutoSkipSecs as float
+    global OPTION_FileIdleTime as float
     global FLAG_MultiSampling as integer
     global FLAG_Fullscreen as integer
     global FLAG_Key as integer
@@ -33,7 +35,9 @@ endfunction
 
 // Set all Options to default values.
 function SetDefaultOptions()
-    OPTION_Seconds = 10.0
+    OPTION_SecsPerDay = 10.0
+    OPTION_AutoSkipSecs = 3.0
+    OPTION_FileIdleTime = 5.0
     FLAG_MultiSampling = 0
     FLAG_Fullscreen = 0
     FLAG_Key = 0
@@ -58,8 +62,10 @@ function ParseOptions()
     if FLAG_Realtime
         GG_Options = GG_Options + "--realtime "
     else
-        GG_Options = GG_Options + "-s " + str$(OPTION_Seconds) + " " 
+        GG_Options = GG_Options + "-s " + str$(OPTION_SecsPerDay) + " "
+        GG_Options = GG_Options + "-a " + str$(OPTION_AutoSkipSecs) + " "
     endif
+    GG_Options = GG_Options + "-i " + str$(OPTION_FileIdleTime) + " "
     if FLAG_NoVSync then GG_Options = GG_Options + "--no-vsync "
     if GG_LogoPath <> "" then GG_Options = GG_Options + "--logo " + GG_LogoPath + " "
     if GG_BGPath <> ""
@@ -81,6 +87,9 @@ function SaveOptions()
         write string f, GG_VCSPath
         write string f, GG_LogoPath
         write string f, GG_BGPath
+        write float f, OPTION_SecsPerDay
+        write float f, OPTION_AutoSkipSecs
+        write float f, OPTION_FileIdleTime
         write file f, FLAG_MultiSampling
         write file f, FLAG_Fullscreen
         write file f, FLAG_Key
@@ -106,6 +115,9 @@ function LoadOptions()
         read string f, GG_VCSPath
         read string f, GG_LogoPath
         read string f, GG_BGPath
+        read float f, OPTION_SecsPerDay
+        read float f, OPTION_AutoSkipSecs
+        read float f, OPTION_FileIdleTime
         read file f, FLAG_MultiSampling
         read file f, FLAG_Fullscreen
         read file f, FLAG_Key

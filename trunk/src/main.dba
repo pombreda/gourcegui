@@ -18,7 +18,7 @@
 
 
 // Shows debug info if set to 1.
-#constant GG_DEBUG     1
+#constant GG_DEBUG     0
 
 // Disable quitting with ESCAPE.
 disable escapekey
@@ -83,10 +83,19 @@ global MainWin as integer
 MainWin = get dbpro window() : set main window MainWin
 window set color MainWin, 239, 239, 239
 
+// Make window for editing speeds/timing...
 SpeedWin = make window(desktop width()/2-200,desktop height()/2-150,400,300,"Edit Timing...", MainWin, WS_BORDER)
 window set color SpeedWin, 239, 239, 239
 
-SW_Seconds = make editbox(10,10,50,20,ES_RIGHT,SpeedWin)
+// Make SpeedWin UI elements...
+SW_SPDLabel = make label(65,11,150,20,"--seconds-per-day",SpeedWin)
+SW_SecsPerDay = make editbox(10,10,50,20,ES_RIGHT,SpeedWin)
+
+SW_ASSLabel = make label(65,36,150,20,"--auto-skip-seconds",SpeedWin)
+SW_AutoSkipSecs = make editbox(10,35,50,20,ES_RIGHT,SpeedWin)
+
+SW_FITLabel = make label(65,61,150,20,"--file-idle-time",SpeedWin)
+SW_FileIdleTime = make editbox(10,60,50,20,ES_RIGHT,SpeedWin)
 
 SW_CloseButton = make button(400-85,300-55,75,25,"Close",SpeedWin)
 hide window SpeedWin
@@ -126,6 +135,17 @@ cb_vsync = make checkbox(Flags.x+500, Flags.y+20, 150, 20, "--no-vsync", MainWin
 GourceButton = make button(650,550,100,30,"Gource!",MainWin)
 ExitButton = make button(50,550,100,30,"Exit",MainWin)
 
+tt = window add tooltip(cb_multisampling,WM_NULL,"Enable MultiSampling")
+tt = window add tooltip(cb_fullscreen, WM_NULL, "Set fullscreen mode")
+tt = window add tooltip(cb_loop, WM_NULL, "Loop back to the start of the log when the end is reached")
+tt = window add tooltip(cb_realtime, WM_NULL, "Realtime playback speed (disables --seconds-per-day & --auto-skip-seconds)")
+tt = window add tooltip(cb_key, WM_NULL, "Show file extension key")
+tt = window add tooltip(cb_vsync, WM_NULL, "Disable vsync")
+
+tt = window add tooltip(SW_SPDLabel, WM_NULL, "Speed of simulation in seconds per day")
+tt = window add tooltip(SW_ASSLabel, WM_NULL, "Skip to next entry if nothing happens for a number of seconds")
+tt = window add tooltip(SW_FITLabel, WM_NULL, "Time in seconds files remain idle before they are removed or 0 for no limit")
+
 if LoadOptions()
     window set text GPEditBox, GG_GourcePath
     window set text VPEditBox, GG_VCSPath
@@ -150,11 +170,18 @@ repeat
         set foreground window SpeedWin
         set active window SpeedWin
         disable window MainWin
+        window set text SW_SecsPerDay, str$(OPTION_SecsPerDay)
+        window set text SW_AutoSkipSecs, str$(OPTION_AutoSkipSecs)
+        window set text SW_FileIdleTime, str$(OPTION_FileIdleTime)
         repeat
             nice sleep 25
-            OPTION_Seconds = val(window get text(SW_Seconds))
+            OPTION_SecsPerDay = val(window get text(SW_SecsPerDay))
+            OPTION_AutoSkipSecs = val(window get text(SW_AutoSkipSecs))
+            OPTION_FileIdleTime = val(window get text(SW_FileIdleTime))
         until button clicked(SW_CloseButton)
-        window set text SW_Seconds, str$(OPTION_Seconds)
+        //window set text SW_SecsPerDay, str$(OPTION_SecsPerDay)
+        //window set text SW_AutoSkipSecs, str$(OPTION_AutoSkipSecs)
+        //window set text SW_FileIdleTime, str$(OPTION_FileIdleTime)
         enable window MainWin
         hide window SpeedWin
         set foreground window MainWin
