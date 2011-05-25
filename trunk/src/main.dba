@@ -209,10 +209,8 @@ repeat
     
     cls rgb(239,239,239)
     if GG_DEBUG
-        ParseOptions()
         ink rgb(0,0,0)
-        col = rgb(r,g,b)
-        text 0,0,right$(hex$(col),6)
+        text 0,0,GG_LogoPath
     endif
     sync
 until GG_Done = 1

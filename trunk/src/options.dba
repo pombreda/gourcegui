@@ -65,7 +65,7 @@ endfunction
 
 // Save options.
 function SaveOptions()
-    if file exist("ggoptions.cfg") then delete file "ggoptions.cfg"
+    if file exist("ggoptions.cfg") = 1 then delete file "ggoptions.cfg"
     f = find free file()
     if f = 0 then exitfunction
     open to write f, "ggoptions.cfg"
