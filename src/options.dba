@@ -65,9 +65,11 @@ endfunction
 
 // Save options.
 function SaveOptions()
-    if file exist("ggoptions.cfg") = 1 then delete file "ggoptions.cfg"
+    temp$ = get dir$()  // Save current path
+    set dir GG_Path     // Make sure options are saved in same folder as GourceGUI.exe
     f = find free file()
     if f = 0 then exitfunction
+    if file exist("ggoptions.cfg") = 1 then delete file "ggoptions.cfg"
     open to write f, "ggoptions.cfg"
         write string f, GG_GourcePath
         write string f, GG_VCSPath
@@ -82,11 +84,14 @@ function SaveOptions()
         write long f, COLOR_Background
         write long f, COLOR_Text
     close file f
+    set dir temp$       // Restore current path
 endfunction
 
 function LoadOptions()
     Success as boolean
     Success = 0
+    temp$ = get dir$()
+    set dir GG_Path
     if file exist("ggoptions.cfg") = 0 then exitfunction Success
     f = find free file()
     if f = 0 then exitfunction Success
@@ -104,5 +109,6 @@ function LoadOptions()
         read long f, COLOR_Background
         read long f, COLOR_Text
     close file f
+    set dir temp$
     Success = 1
 endfunction Success
