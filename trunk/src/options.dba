@@ -56,7 +56,11 @@ function ParseOptions()
     if FLAG_Realtime then GG_Options = GG_Options + "--realtime "
     if FLAG_NoVSync then GG_Options = GG_Options + "--no-vsync "
     if GG_LogoPath <> "" then GG_Options = GG_Options + "--logo " + GG_LogoPath + " "
-    if GG_BGPath <> "" then GG_Options = GG_Options + "--background-image " + GG_BGPath + " "
+    if GG_BGPath <> ""
+        GG_Options = GG_Options + "--background-image " + GG_BGPath + " "
+    else
+        GG_Options = GG_Options + "-b " + right$(hex$(COLOR_Background), 6) + " "
+    endif
 endfunction
 
 // Save options.
@@ -75,8 +79,8 @@ function SaveOptions()
         write file f, FLAG_Loop
         write file f, FLAG_Realtime
         write file f, FLAG_NoVSync
-        write file f, COLOR_Background
-        write file f, COLOR_Text
+        write long f, COLOR_Background
+        write long f, COLOR_Text
     close file f
 endfunction
 
@@ -97,8 +101,8 @@ function LoadOptions()
         read file f, FLAG_Loop
         read file f, FLAG_Realtime
         read file f, FLAG_NoVSync
-        read file f, COLOR_Background
-        read file f, COLOR_Text
+        read long f, COLOR_Background
+        read long f, COLOR_Text
     close file f
     Success = 1
 endfunction Success
