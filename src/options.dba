@@ -19,6 +19,7 @@
 
 // Initialize the Options.
 function InitOptions()
+    global OPTION_Seconds as float
     global FLAG_MultiSampling as integer
     global FLAG_Fullscreen as integer
     global FLAG_Key as integer
@@ -32,6 +33,7 @@ endfunction
 
 // Set all Options to default values.
 function SetDefaultOptions()
+    OPTION_Seconds = 10.0
     FLAG_MultiSampling = 0
     FLAG_Fullscreen = 0
     FLAG_Key = 0
@@ -53,7 +55,11 @@ function ParseOptions()
     endif
     if FLAG_Key then GG_Options = GG_Options + "--key "
     if FLAG_Loop then GG_Options = GG_Options + "--loop "
-    if FLAG_Realtime then GG_Options = GG_Options + "--realtime "
+    if FLAG_Realtime
+        GG_Options = GG_Options + "--realtime "
+    else
+        GG_Options = GG_Options + "-s " + str$(OPTION_Seconds) + " " 
+    endif
     if FLAG_NoVSync then GG_Options = GG_Options + "--no-vsync "
     if GG_LogoPath <> "" then GG_Options = GG_Options + "--logo " + GG_LogoPath + " "
     if GG_BGPath <> ""

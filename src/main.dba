@@ -18,7 +18,7 @@
 
 
 // Shows debug info if set to 1.
-#constant GG_DEBUG     0
+#constant GG_DEBUG     1
 
 // Disable quitting with ESCAPE.
 disable escapekey
@@ -83,6 +83,14 @@ global MainWin as integer
 MainWin = get dbpro window() : set main window MainWin
 window set color MainWin, 239, 239, 239
 
+SpeedWin = make window(desktop width()/2-200,desktop height()/2-150,400,300,"Edit Timing...", MainWin, WS_BORDER)
+window set color SpeedWin, 239, 239, 239
+
+SW_Seconds = make editbox(10,10,50,20,ES_RIGHT,SpeedWin)
+
+SW_CloseButton = make button(400-85,300-55,75,25,"Close",SpeedWin)
+hide window SpeedWin
+
 // Create the Labels, EditBoxes, and Buttons for the PATH area.
 GPLabel = make label(GPPos.x,GPPos.y,500,20,"Gource Executable",MainWin)
 GPEditBox = make editbox(GPPos.x,GPPos.y+20,600,20,ES_READONLY,MainWin) : window set text GPEditBox, GG_GourcePath
@@ -97,8 +105,10 @@ BPLabel = make label(BPPos.x,BPPos.y,500,20,"Background Image",MainWin)
 BPEditBox = make editbox(BPPos.x,BPPos.y+20,600,20,ES_READONLY,MainWin) : window set text BPEditBox, GG_BGPath
 BPButton = make button(BPPos.x+600,BPPos.y+19,20,20,"...",MainWin)
 
-bglabel = make label(BPPos.x+20, BPPos.y+75, 100,20, "BG Colour", MainWin)
-bgwin = make window(BPPos.x, BPPos.y+75, 16, 16, "BGCOL", MainWin, WS_CHILD)
+SpeedButton = make button(BPPos.x, BPPos.y+55, 100,25,"Edit Timing...",MainWin)
+
+bglabel = make label(BPPos.x+23, BPPos.y+97, 150,20, "--background-colour", MainWin)
+bgwin = make window(BPPos.x, BPPos.y+95, 20, 20, "BGCOL", MainWin, WS_CHILD)
 
 // Bugged command?
 // make hsplitter(LPPos.x, LPPos.y+50, 620, 5, MainWin)
@@ -130,11 +140,26 @@ if LoadOptions()
     window set color bgwin, rgbr(COLOR_Background), rgbg(COLOR_Background), rgbb(COLOR_Background)
 endif
 
-window to front
+set focus window MainWin
 
 // Main Loop
 repeat
     nice sleep 25
+    if button clicked(SpeedButton)
+        show window SpeedWin
+        set foreground window SpeedWin
+        set active window SpeedWin
+        disable window MainWin
+        repeat
+            nice sleep 25
+            OPTION_Seconds = val(window get text(SW_Seconds))
+        until button clicked(SW_CloseButton)
+        window set text SW_Seconds, str$(OPTION_Seconds)
+        enable window MainWin
+        hide window SpeedWin
+        set foreground window MainWin
+        set active window MainWin
+    endif
     if window clicked(bgwin)
         c = make color picker(MainWin)
         r = color picker get r(c)
@@ -213,7 +238,7 @@ repeat
     cls rgb(239,239,239)
     if GG_DEBUG
         ink rgb(0,0,0)
-        text 0,0,GG_LogoPath
+        text 0,0,str$(OPTION_Seconds)
     endif
     sync
 until GG_Done = 1
