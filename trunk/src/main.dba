@@ -29,6 +29,9 @@ type coord_type
     y as integer
 endtype
 
+global GG_Path as string
+GG_Path = get dir$()
+
 // Global EXIT flag.
 global GG_Done as boolean
 GG_Done = 0
