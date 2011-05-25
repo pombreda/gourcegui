@@ -60,7 +60,7 @@ BPPos.y = LPPos.y + 50
 // Positioning of FLAGS area.
 global Flags as coord_type
 Flags.x = GPPos.x
-Flags.y = BPPos.y + 100
+Flags.y = BPPos.y + 150
 
 // Initialize the Options.
 InitOptions()
@@ -69,7 +69,6 @@ InitOptions()
 sync on : sync rate 0
 randomize timer()
 
-// Set the background color.
 cls rgb(239,239,239)
 sync
 
@@ -79,6 +78,7 @@ start bbb gui
 // Get handle to the main window. (DBPro window)
 global MainWin as integer
 MainWin = get dbpro window() : set main window MainWin
+window set color MainWin, 239, 239, 239
 
 // Create the Labels, EditBoxes, and Buttons for the PATH area.
 GPLabel = make label(GPPos.x,GPPos.y,500,20,"Gource Executable",MainWin)
@@ -93,6 +93,9 @@ LPButton = make button(LPPos.x+600,LPPos.y+19,20,20,"...",MainWin)
 BPLabel = make label(BPPos.x,BPPos.y,500,20,"Background Image",MainWin)
 BPEditBox = make editbox(BPPos.x,BPPos.y+20,600,20,ES_READONLY,MainWin) : window set text BPEditBox, GG_BGPath
 BPButton = make button(BPPos.x+600,BPPos.y+19,20,20,"...",MainWin)
+
+bglabel = make label(BPPos.x+20, BPPos.y+75, 100,20, "BG Colour", MainWin)
+bgwin = make window(BPPos.x, BPPos.y+75, 16, 16, "BGCOL", MainWin, WS_CHILD)
 
 // Bugged command?
 // make hsplitter(LPPos.x, LPPos.y+50, 620, 5, MainWin)
@@ -121,11 +124,22 @@ if LoadOptions()
     checkbox set state cb_realtime, FLAG_Realtime
     checkbox set state cb_key, FLAG_Key
     checkbox set state cb_vsync, FLAG_NoVSync
+    window set color bgwin, rgbr(COLOR_Background), rgbg(COLOR_Background), rgbb(COLOR_Background)
 endif
+
+window to front
 
 // Main Loop
 repeat
     nice sleep 25
+    if window clicked(bgwin)
+        c = make color picker(MainWin)
+        r = color picker get r(c)
+        g = color picker get g(c)
+        b = color picker get b(c)
+        COLOR_Background = rgb(r,g,b)
+        window set color bgwin, rgbr(COLOR_Background), rgbg(COLOR_Background), rgbb(COLOR_Background)
+    endif
     if button clicked(GPButton)
         GG_GourcePath = open file dialog("Locate gource.exe","Gource|gource.exe")
         window set text GPEditBox, GG_GourcePath
@@ -179,29 +193,28 @@ repeat
     
     // Handle the Exit and Gource! buttons.    
     if button clicked(ExitButton)
-        a = make message box("Really Quit?","GourceGUI",MB_YESNO)
-        if a = IDYES
-            SaveOptions()
-            GG_Done = 1
-        endif
+        GG_Quit()
     endif
     if button clicked(GourceButton)
         if GG_GourcePath <> "" and GG_VCSPath <> ""
             SaveOptions()
             ParseOptions()
+            hide window MainWin
             execute file GG_GourcePath, GG_Options+GG_VCSPath, "", 1
+            show window MainWin
         endif
     endif
 
     GG_MSGLoop()
     
+    cls rgb(239,239,239)
     if GG_DEBUG
         ParseOptions()
-        cls rgb(239,239,239)
         ink rgb(0,0,0)
-        text 0,0,GG_Options
-        sync
+        col = rgb(r,g,b)
+        text 0,0,right$(hex$(col),6)
     endif
+    sync
 until GG_Done = 1
 
 // End the program...
@@ -217,12 +230,16 @@ function GG_MSGLoop()
         m = event get message()
         if h = get main window()
             if m = WM_CLOSE
-                a = make message box("Really Quit?","GourceGUI",MB_YESNO)
-                if a = IDYES
-                    SaveOptions()
-                    GG_Done = 1
-                endif
+                GG_Quit()
             endif
         endif
     until m = 0
+endfunction
+
+function GG_Quit()
+    a = make message box("Really Quit?","GourceGUI",MB_YESNO)
+    if a = IDYES
+        SaveOptions()
+        GG_Done = 1
+    endif
 endfunction
