@@ -84,21 +84,54 @@ MainWin = get dbpro window() : set main window MainWin
 window set color MainWin, 239, 239, 239
 
 // Make window for editing speeds/timing...
-SpeedWin = make window(desktop width()/2-200,desktop height()/2-150,400,300,"Edit Timing...", MainWin, WS_BORDER)
+SpeedWin = make window(desktop width()/2-200,desktop height()/2-150,400,300,"Edit timing...", MainWin, WS_BORDER)
 window set color SpeedWin, 239, 239, 239
 
 // Make SpeedWin UI elements...
 SW_SPDLabel = make label(65,11,150,20,"--seconds-per-day",SpeedWin)
 SW_SecsPerDay = make editbox(10,10,50,20,ES_RIGHT,SpeedWin)
-
 SW_ASSLabel = make label(65,36,150,20,"--auto-skip-seconds",SpeedWin)
 SW_AutoSkipSecs = make editbox(10,35,50,20,ES_RIGHT,SpeedWin)
-
 SW_FITLabel = make label(65,61,150,20,"--file-idle-time",SpeedWin)
 SW_FileIdleTime = make editbox(10,60,50,20,ES_RIGHT,SpeedWin)
 
+tt = window add tooltip(SW_SPDLabel, 0, "Speed of simulation in seconds per day")
+tt = window add tooltip(SW_ASSLabel, 0, "Skip to next entry if nothing happens for a number of seconds")
+tt = window add tooltip(SW_FITLabel, 0, "Time in seconds files remain idle before they are removed or 0 for no limit")
+
 SW_CloseButton = make button(400-85,300-55,75,25,"Close",SpeedWin)
 hide window SpeedWin
+
+// Make HideWin UI elements...
+HideWin = make window(desktop width()/2-125,desktop height()/2-100,250,200,"Hide elements...", MainWin, WS_BORDER)
+window set color HideWin, 239, 239, 239
+
+HW_Bloom = make checkbox(10,10,100,20,"Bloom",HideWin)
+HW_Date = make checkbox(150,10,100,20,"Date",HideWin)
+HW_DirNames = make checkbox(10,30,100,20,"DirNames",HideWin)
+HW_Files = make checkbox(150,30,100,20,"Files",HideWin)
+HW_FileNames = make checkbox(10,50,100,20,"FileNames",HideWin)
+HW_Mouse = make checkbox(150,50,100,20,"Mouse",HideWin)
+HW_Progress = make checkbox(10,70,100,20,"Progress",HideWin)
+HW_Root = make checkbox(150,70,100,20,"Root",HideWin)
+HW_Tree = make checkbox(10,90,100,20,"Tree",HideWin)
+HW_Users = make checkbox(150,90,100,20,"Users",HideWin)
+HW_UserNames = make checkbox(10,110,100,20,"UserNames",HideWin)
+
+tt = window add tooltip(HW_Bloom, 0, "Hide bloom effect")
+tt = window add tooltip(HW_Date, 0, "Hide current date")
+tt = window add tooltip(HW_DirNames, 0, "Hide names of directories")
+tt = window add tooltip(HW_Files, 0, "Hide file icons")
+tt = window add tooltip(HW_FileNames, 0, "Hide names of files")
+tt = window add tooltip(HW_Mouse, 0, "Hide mouse cursor")
+tt = window add tooltip(HW_Progress, 0, "Hide progress bar widget")
+tt = window add tooltip(HW_Root, 0, "Hide root directory of tree")
+tt = window add tooltip(HW_Tree, 0, "Hide animated tree structure")
+tt = window add tooltip(HW_Users, 0, "Hide user avatars")
+tt = window add tooltip(HW_UserNames, 0, "Hide names of users")
+
+HW_CloseButton = make button(250-85,200-55,75,25,"Close",HideWin)
+hide window HideWin
 
 // Create the Labels, EditBoxes, and Buttons for the PATH area.
 GPLabel = make label(GPPos.x,GPPos.y,500,20,"Gource Executable",MainWin)
@@ -114,10 +147,12 @@ BPLabel = make label(BPPos.x,BPPos.y,500,20,"Background Image",MainWin)
 BPEditBox = make editbox(BPPos.x,BPPos.y+20,600,20,ES_READONLY,MainWin) : window set text BPEditBox, GG_BGPath
 BPButton = make button(BPPos.x+600,BPPos.y+19,20,20,"...",MainWin)
 
-SpeedButton = make button(BPPos.x, BPPos.y+55, 100,25,"Edit Timing...",MainWin)
+SpeedButton = make button(BPPos.x, BPPos.y+55, 150,25,"Edit Timing...",MainWin)
+HideButton = make button(BPPos.x+200, BPPos.y+55, 150,25,"Hide elements...",MainWin)
 
 bglabel = make label(BPPos.x+23, BPPos.y+97, 150,20, "--background-colour", MainWin)
 bgwin = make window(BPPos.x, BPPos.y+95, 20, 20, "BGCOL", MainWin, WS_CHILD)
+tt = window add tooltip(bglabel, 0, "Set background color")
 
 // Bugged command?
 // make hsplitter(LPPos.x, LPPos.y+50, 620, 5, MainWin)
@@ -131,20 +166,16 @@ cb_realtime = make checkbox(Flags.x, Flags.y+20, 150, 20, "--realtime", MainWin)
 cb_key = make checkbox(Flags.x+250, Flags.y+20, 150, 20, "--key", MainWin)
 cb_vsync = make checkbox(Flags.x+500, Flags.y+20, 150, 20, "--no-vsync", MainWin)
 
+tt = window add tooltip(cb_multisampling,0,"Enable MultiSampling")
+tt = window add tooltip(cb_fullscreen, 0, "Set fullscreen mode")
+tt = window add tooltip(cb_loop, 0, "Loop back to the start of the log when the end is reached")
+tt = window add tooltip(cb_realtime, 0, "Realtime playback speed (disables --seconds-per-day & --auto-skip-seconds)")
+tt = window add tooltip(cb_key, 0, "Show file extension key")
+tt = window add tooltip(cb_vsync, 0, "Disable vsync")
+
 // Create the Gource, and Exit buttons.
 GourceButton = make button(650,550,100,30,"Gource!",MainWin)
 ExitButton = make button(50,550,100,30,"Exit",MainWin)
-
-tt = window add tooltip(cb_multisampling,WM_NULL,"Enable MultiSampling")
-tt = window add tooltip(cb_fullscreen, WM_NULL, "Set fullscreen mode")
-tt = window add tooltip(cb_loop, WM_NULL, "Loop back to the start of the log when the end is reached")
-tt = window add tooltip(cb_realtime, WM_NULL, "Realtime playback speed (disables --seconds-per-day & --auto-skip-seconds)")
-tt = window add tooltip(cb_key, WM_NULL, "Show file extension key")
-tt = window add tooltip(cb_vsync, WM_NULL, "Disable vsync")
-
-tt = window add tooltip(SW_SPDLabel, WM_NULL, "Speed of simulation in seconds per day")
-tt = window add tooltip(SW_ASSLabel, WM_NULL, "Skip to next entry if nothing happens for a number of seconds")
-tt = window add tooltip(SW_FITLabel, WM_NULL, "Time in seconds files remain idle before they are removed or 0 for no limit")
 
 if LoadOptions()
     window set text GPEditBox, GG_GourcePath
@@ -184,6 +215,63 @@ repeat
         //window set text SW_FileIdleTime, str$(OPTION_FileIdleTime)
         enable window MainWin
         hide window SpeedWin
+        set foreground window MainWin
+        set active window MainWin
+    endif
+    if button clicked(HideButton)
+        show window HideWin
+        set foreground window HideWin
+        set active window HideWin
+        disable window MainWin
+        checkbox set state HW_Bloom, (FLAG_Hide && HIDE_BLOOM)
+        checkbox set state HW_Date, ((FLAG_Hide && HIDE_DATE) >> 1)
+        checkbox set state HW_DirNames, ((FLAG_Hide && HIDE_DIRNAMES) >> 2)
+        checkbox set state HW_Files, ((FLAG_Hide && HIDE_FILES) >> 3)
+        checkbox set state HW_FileNames, ((FLAG_Hide && HIDE_FILENAMES) >> 4)
+        checkbox set state HW_Mouse, ((FLAG_Hide && HIDE_MOUSE) >> 5)
+        checkbox set state HW_Progress, ((FLAG_Hide && HIDE_PROGRESS) >> 6)
+        checkbox set state HW_Root, ((FLAG_Hide && HIDE_ROOT) >> 7)
+        checkbox set state HW_Tree, ((FLAG_Hide && HIDE_TREE) >> 8)
+        checkbox set state HW_Users, ((FLAG_Hide && HIDE_USERS) >> 9)
+        checkbox set state HW_UserNames, ((FLAG_Hide && HIDE_USERNAMES) >> 10)
+        repeat
+            nice sleep 25
+            cbs = checkbox get state(HW_Bloom)
+            if cbs = 2 then FLAG_Hide = (FLAG_Hide || HIDE_BLOOM)
+            if cbs = 3 then FLAG_Hide = (FLAG_Hide && (not HIDE_BLOOM))
+            cbs = checkbox get state(HW_Date)
+            if cbs = 2 then FLAG_Hide = (FLAG_Hide || HIDE_DATE)
+            if cbs = 3 then FLAG_Hide = (FLAG_Hide && (not HIDE_DATE))
+            cbs = checkbox get state(HW_DirNames)
+            if cbs = 2 then FLAG_Hide = (FLAG_Hide || HIDE_DIRNAMES)
+            if cbs = 3 then FLAG_Hide = (FLAG_Hide && (not HIDE_DIRNAMES))
+            cbs = checkbox get state(HW_Files)
+            if cbs = 2 then FLAG_Hide = (FLAG_Hide || HIDE_FILES)
+            if cbs = 3 then FLAG_Hide = (FLAG_Hide && (not HIDE_FILES))
+            cbs = checkbox get state(HW_FileNames)
+            if cbs = 2 then FLAG_Hide = (FLAG_Hide || HIDE_FILENAMES)
+            if cbs = 3 then FLAG_Hide = (FLAG_Hide && (not HIDE_FILENAMES))
+            cbs = checkbox get state(HW_Mouse)
+            if cbs = 2 then FLAG_Hide = (FLAG_Hide || HIDE_MOUSE)
+            if cbs = 3 then FLAG_Hide = (FLAG_Hide && (not HIDE_MOUSE))
+            cbs = checkbox get state(HW_Progress)
+            if cbs = 2 then FLAG_Hide = (FLAG_Hide || HIDE_PROGRESS)
+            if cbs = 3 then FLAG_Hide = (FLAG_Hide && (not HIDE_PROGRESS))
+            cbs = checkbox get state(HW_Root)
+            if cbs = 2 then FLAG_Hide = (FLAG_Hide || HIDE_ROOT)
+            if cbs = 3 then FLAG_Hide = (FLAG_Hide && (not HIDE_ROOT))
+            cbs = checkbox get state(HW_Tree)
+            if cbs = 2 then FLAG_Hide = (FLAG_Hide || HIDE_TREE)
+            if cbs = 3 then FLAG_Hide = (FLAG_Hide && (not HIDE_TREE))
+            cbs = checkbox get state(HW_Users)
+            if cbs = 2 then FLAG_Hide = (FLAG_Hide || HIDE_USERS)
+            if cbs = 3 then FLAG_Hide = (FLAG_Hide && (not HIDE_USERS))
+            cbs = checkbox get state(HW_UserNames)
+            if cbs = 2 then FLAG_Hide = (FLAG_Hide || HIDE_USERNAMES)
+            if cbs = 3 then FLAG_Hide = (FLAG_Hide && (not HIDE_USERNAMES))
+        until button clicked(HW_CloseButton)
+        enable window MainWin
+        hide window HideWin
         set foreground window MainWin
         set active window MainWin
     endif
@@ -265,7 +353,7 @@ repeat
     cls rgb(239,239,239)
     if GG_DEBUG
         ink rgb(0,0,0)
-        text 0,0,str$(OPTION_Seconds)
+        text 0,0,hex$(FLAG_Hide)
     endif
     sync
 until GG_Done = 1
