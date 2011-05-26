@@ -5,11 +5,11 @@ project name=GourceGUI
 
 ; **** source file information ****
 main=main.dba
-LineMain=33
+LineMain=162
 include1=BBBGUI_CONSTANTS.dba
 LineInclude1=36
 include2=options.dba
-LineInclude2=159
+LineInclude2=109
 
 ; **** Executable Information  ***
 ; build types: exe, media, installer, alone
