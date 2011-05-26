@@ -17,6 +17,20 @@
 // along with GourceGUI.  If not, see <http://www.gnu.org/licenses/>.
 
 
+// HIDE flags.
+#constant HIDE_NONE         0
+#constant HIDE_BLOOM        1
+#constant HIDE_DATE         2
+#constant HIDE_DIRNAMES     4
+#constant HIDE_FILES        8
+#constant HIDE_FILENAMES    16
+#constant HIDE_MOUSE        32
+#constant HIDE_PROGRESS     64
+#constant HIDE_ROOT         128
+#constant HIDE_TREE         256
+#constant HIDE_USERS        512
+#constant HIDE_USERNAMES    1024
+
 // Initialize the Options.
 function InitOptions()
     global OPTION_SecsPerDay as float
@@ -28,6 +42,7 @@ function InitOptions()
     global FLAG_Loop as integer
     global FLAG_Realtime as integer
     global FLAG_NoVSync as integer
+    global FLAG_Hide as dword
     global COLOR_Background as dword
     global COLOR_Text as dword
     SetDefaultOptions()
@@ -44,6 +59,7 @@ function SetDefaultOptions()
     FLAG_Loop = 0
     FLAG_Realtime = 0
     FLAG_NoVSync = 0
+    FLAG_Hide = HIDE_NONE
     COLOR_Background = rgb(0,0,0)
     COLOR_Text = rgb(255,255,255)
 endfunction
@@ -73,6 +89,22 @@ function ParseOptions()
     else
         GG_Options = GG_Options + "-b " + right$(hex$(COLOR_Background), 6) + " "
     endif
+    if FLAG_Hide <> 0
+        GG_Options = GG_Options + "--hide "
+        if (FLAG_Hide && HIDE_BLOOM) then GG_Options = GG_Options + "bloom,"
+        if (FLAG_Hide && HIDE_DATE) then GG_Options = GG_Options + "date,"
+        if (FLAG_Hide && HIDE_DIRNAMES) then GG_Options = GG_Options + "dirnames,"
+        if (FLAG_Hide && HIDE_FILES) then GG_Options = GG_Options + "files,"
+        if (FLAG_Hide && HIDE_FILENAMES) then GG_Options = GG_Options + "filenames,"
+        if (FLAG_Hide && HIDE_MOUSE) then GG_Options = GG_Options + "mouse,"
+        if (FLAG_Hide && HIDE_PROGRESS) then GG_Options = GG_Options + "progress,"
+        if (FLAG_Hide && HIDE_ROOT) then GG_Options = GG_Options + "root,"
+        if (FLAG_Hide && HIDE_TREE) then GG_Options = GG_Options + "tree,"
+        if (FLAG_Hide && HIDE_USERS) then GG_Options = GG_Options + "users,"
+        if (FLAG_Hide && HIDE_USERNAMES) then GG_Options = GG_Options + "usernames"
+        if right$(GG_Options,1) = "," then GG_Options = left$(GG_Options, len(GG_Options)-1)
+        GG_Options = GG_Options + " "
+    endif
 endfunction
 
 // Save options.
@@ -96,6 +128,7 @@ function SaveOptions()
         write file f, FLAG_Loop
         write file f, FLAG_Realtime
         write file f, FLAG_NoVSync
+        write long f, FLAG_Hide
         write long f, COLOR_Background
         write long f, COLOR_Text
     close file f
@@ -124,6 +157,7 @@ function LoadOptions()
         read file f, FLAG_Loop
         read file f, FLAG_Realtime
         read file f, FLAG_NoVSync
+        read long f, FLAG_Hide
         read long f, COLOR_Background
         read long f, COLOR_Text
     close file f
