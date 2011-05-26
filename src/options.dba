@@ -44,7 +44,7 @@ function InitOptions()
     global FLAG_NoVSync as integer
     global FLAG_Hide as dword
     global COLOR_Background as dword
-    global COLOR_Text as dword
+    global COLOR_Font as dword
     SetDefaultOptions()
 endfunction
 
@@ -61,7 +61,7 @@ function SetDefaultOptions()
     FLAG_NoVSync = 0
     FLAG_Hide = HIDE_NONE
     COLOR_Background = rgb(0,0,0)
-    COLOR_Text = rgb(255,255,255)
+    COLOR_Font = rgb(255,255,255)
 endfunction
 
 // Parse all the Options into a string.
@@ -89,6 +89,7 @@ function ParseOptions()
     else
         GG_Options = GG_Options + "-b " + right$(hex$(COLOR_Background), 6) + " "
     endif
+    GG_Options = GG_Options + "--font-colour " + right$(hex$(COLOR_Font), 6) + " "
     if FLAG_Hide <> 0
         GG_Options = GG_Options + "--hide "
         if (FLAG_Hide && HIDE_BLOOM) then GG_Options = GG_Options + "bloom,"
@@ -130,7 +131,7 @@ function SaveOptions()
         write file f, FLAG_NoVSync
         write long f, FLAG_Hide
         write long f, COLOR_Background
-        write long f, COLOR_Text
+        write long f, COLOR_Font
     close file f
     set dir temp$       // Restore current path
 endfunction
@@ -159,7 +160,7 @@ function LoadOptions()
         read file f, FLAG_NoVSync
         read long f, FLAG_Hide
         read long f, COLOR_Background
-        read long f, COLOR_Text
+        read long f, COLOR_Font
     close file f
     set dir temp$
     Success = 1

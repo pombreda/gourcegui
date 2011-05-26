@@ -154,6 +154,10 @@ bglabel = make label(BPPos.x+23, BPPos.y+97, 150,20, "--background-colour", Main
 bgwin = make window(BPPos.x, BPPos.y+95, 20, 20, "BGCOL", MainWin, WS_CHILD)
 tt = window add tooltip(bglabel, 0, "Set background color")
 
+fontlabel = make label(BPPos.x+223, BPPos.y+97, 150,20, "--font-colour", MainWin)
+fontwin = make window(BPPos.x+200, BPPos.y+95, 20,20, "FONTCOL", MainWin, WS_CHILD)
+tt = window add tooltip(fontlabel, 0, "Set font color")
+
 // Bugged command?
 // make hsplitter(LPPos.x, LPPos.y+50, 620, 5, MainWin)
 
@@ -189,6 +193,7 @@ if LoadOptions()
     checkbox set state cb_key, FLAG_Key
     checkbox set state cb_vsync, FLAG_NoVSync
     window set color bgwin, rgbr(COLOR_Background), rgbg(COLOR_Background), rgbb(COLOR_Background)
+    window set color fontwin, rgbr(COLOR_Font), rgbg(COLOR_Font), rgbb(COLOR_Font)
 endif
 
 set focus window MainWin
@@ -282,6 +287,14 @@ repeat
         b = color picker get b(c)
         COLOR_Background = rgb(r,g,b)
         window set color bgwin, rgbr(COLOR_Background), rgbg(COLOR_Background), rgbb(COLOR_Background)
+    endif
+    if window clicked(fontwin)
+        c = make color picker(MainWin)
+        r = color picker get r(c)
+        g = color picker get g(c)
+        b = color picker get b(c)
+        COLOR_Font = rgb(r,g,b)
+        window set color fontwin, rgbr(COLOR_Font), rgbg(COLOR_Font), rgbb(COLOR_Font)
     endif
     if button clicked(GPButton)
         GG_GourcePath = open file dialog("Locate gource.exe","Gource|gource.exe")
