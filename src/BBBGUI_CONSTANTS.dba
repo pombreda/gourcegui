@@ -34,27 +34,28 @@
 #constant WM_QUEUESYNC                    0x0023
 #constant WM_GETMINMAXINFO                0x0024
 #constant WM_SIZING                       0x0214
+
 //=== WINDOW =====================================================================================
 `Window styles
-#constant WS_OVERLAPPED							0x00000000
-#constant WS_MAXIMIZEBOX 						0x00010000
-#constant WS_MINIMIZEBOX 						0x00020000
-#constant WS_THICKFRAME 						0x00040000
-#constant WS_CAPTION 							0x00C00000
-#constant WS_SYSMENU 							0x00080000
-#constant WS_POPUP 								0x800000000
-#constant WS_VISIBLE 							0x100000000
-#constant WS_HSCROLL 							0x00100000
-#constant WS_VSCROLL 							0x00200000
-#constant WS_MINIMIZE 							0x20000000
-#constant WS_MAXIMIZE 							0x01000000
-#constant WS_DLGFRAME 							0x00400000
-#constant WS_DISABLED 							0x08000000
-#constant WS_CLIPSIBLINGS 						0x04000000
-#constant WS_CLIPCHILDREN 						0x02000000
-#constant WS_CHILD 								0x40000000
-#constant WS_BORDER 								0x00800000
-#constant WS_OVERLAPPEDWINDOW 				13565952
+#constant WS_OVERLAPPED                            0x00000000
+#constant WS_MAXIMIZEBOX                         0x00010000
+#constant WS_MINIMIZEBOX                         0x00020000
+#constant WS_THICKFRAME                         0x00040000
+#constant WS_CAPTION                             0x00C00000
+#constant WS_SYSMENU                             0x00080000
+#constant WS_POPUP                                 0x800000000
+#constant WS_VISIBLE                             0x100000000
+#constant WS_HSCROLL                             0x00100000
+#constant WS_VSCROLL                             0x00200000
+#constant WS_MINIMIZE                             0x20000000
+#constant WS_MAXIMIZE                             0x01000000
+#constant WS_DLGFRAME                             0x00400000
+#constant WS_DISABLED                             0x08000000
+#constant WS_CLIPSIBLINGS                         0x04000000
+#constant WS_CLIPCHILDREN                         0x02000000
+#constant WS_CHILD                                 0x40000000
+#constant WS_BORDER                                 0x00800000
+#constant WS_OVERLAPPEDWINDOW                 13565952
 
 `Window ex styles
 #constant WS_EX_DLGMODALFRAME     0x00000001
@@ -81,7 +82,7 @@
 `Right to left mirroring
 #constant WS_EX_LAYOUTRTL         0x00400000
 #constant WS_EX_COMPOSITED        0x02000000
-#constant WS_EX_NOACTIVATE 		 0x08000000
+#constant WS_EX_NOACTIVATE          0x08000000
 
 //===== REBAR =====================================================================================
 `Rebar styles
@@ -122,11 +123,12 @@
 #constant RBBS_TOPALIGN       0x00000800
 
 
-//== Scrollbar styles ================================================================================
+//== SCROLLBAR ==========================================================================================
+`Styles
 #constant SBS_VERT 0x0001
 #constant SBS_HORZ 0x0000
 
-//=== MESSAGEBOX =====================================================================================
+//=== MESSAGEBOX ========================================================================================
 `Messagebox result values
 #constant IDOK          1
 #constant IDCANCEL      2
@@ -402,6 +404,14 @@
 #constant BTNS_SHOWTEXT   0x0040        
 // draw drop-down arrow, but without split arrow section
 #constant BTNS_WHOLEDROPDOWN  0x0080
+
+`Toolbar button states
+#constant TBSTATE_CHECKED         0x01
+#constant TBSTATE_PRESSED         0x02
+#constant TBSTATE_ENABLED         0x04
+#constant TBSTATE_HIDDEN          0x08
+#constant TBSTATE_INDETERMINATE   0x10
+#constant TBSTATE_WRAP 0x20
 
 
 //=== COMMON CONTROL STYLES ================================================================================
@@ -689,7 +699,7 @@
 #constant FW_EXTRABOLD        800
 #constant FW_HEAVY            900
 
-//LAYERED WINDOW
+//LAYERED WINDOW ============================================================================================
 `Styles
 #constant LWA_COLORKEY            0x00000001
 #constant LWA_ALPHA               0x00000002
@@ -709,3 +719,297 @@
 #constant FLASHW_TRAY 0x00000002
 
  
+//RICH EDITBOX ==============================================================================================
+`Text format styles
+#constant SCF_SELECTION        0x0001
+#constant SCF_WORD            0x0002
+//Set default charformat or paraformat
+#constant SCF_DEFAULT            0x0000
+//Not valid with SCF_SELECTION or SCF_WORD
+#constant SCF_ALL                0x0004
+//Modifier for SCF_SELECTION; says that
+//format came from a toolbar, etc., and
+//hence UI formatting rules should be
+//used instead of literal formatting
+#constant SCF_USEUIRULES        0x0008
+//Associate fontname with bCharSet (one
+//possible for each of Western, ME, FE,
+//Thai)
+#constant SCF_ASSOCIATEFONT    0x0010
+//Do not update KB layput for this change
+//even if autokeyboard is on
+#constant SCF_NOKBUPDATE        0x0020
+//Associate plane-2 (surrogate) font        
+#constant SCF_ASSOCIATEFONT2    0x0040
+
+// Flags for the GETEXT
+#constant GT_DEFAULT        0
+#constant GT_USECRLF        1
+#constant GT_SELECTION    2
+#constant GT_RAWTEXT        4
+#constant GT_NOHIDDENTEXT    8
+
+// Flags for the SETEXT 
+#constant ST_DEFAULT        0
+#constant ST_KEEPUNDO    1
+#constant ST_SELECTION    2
+#constant ST_NEWCHARS     4
+
+//flags for use with open and save
+#constant SF_TEXT            0x0001
+#constant SF_RTF            0x0002
+//Write only
+#constant SF_RTFNOOBJS    0x0003
+//Write only
+#constant SF_TEXTIZED    0x0004 
+//Unicode file (UCS2 little endian)
+#constant SF_UNICODE        0x0010         
+#constant SF_USECODEPAGE    0x0020
+//Output /uN for nonASCII 
+#constant SF_NCRFORNONASCII 0x40
+//Output \par at end
+#constant SFF_WRITEXTRAPAR  0x80
+
+`Char format effects
+// CHARFORMAT masks 
+#constant CFM_BOLD        0x00000001
+#constant CFM_ITALIC        0x00000002
+#constant CFM_UNDERLINE    0x00000004
+#constant CFM_STRIKEOUT    0x00000008
+#constant CFM_PROTECTED    0x00000010
+//Exchange hyperlink extension 
+#constant CFM_LINK        0x00000020
+#constant CFM_SIZE        0x80000000
+#constant CFM_COLOR        0x40000000
+#constant CFM_FACE        0x20000000
+#constant CFM_OFFSET        0x10000000
+#constant CFM_CHARSET    0x08000000
+
+#constant CFM_SMALLCAPS    0x0040
+#constant CFM_ALLCAPS    0x0080
+#constant CFM_HIDDEN        0x0100
+#constant CFM_OUTLINE    0x0200
+#constant CFM_SHADOW        0x0400
+#constant CFM_EMBOSS        0x0800
+#constant CFM_IMPRINT    0x1000
+#constant CFM_DISABLED    0x2000
+#constant CFM_REVISED    0x4000
+
+#constant CFM_BACKCOLOR            0x04000000
+#constant CFM_LCID                0x02000000
+#constant CFM_UNDERLINETYPE    0x00800000
+#constant CFM_WEIGHT                0x00400000
+#constant CFM_SPACING            0x00200000
+#constant CFM_KERNING            0x00100000
+#constant CFM_STYLE                0x00080000
+#constant CFM_ANIMATION            0x00040000
+#constant CFM_REVAUTHOR            0x00008000
+//constant CFM_SUBSCRIPT        (CFE_SUBSCRIPT | CFE_SUPERSCRIPT)
+//constant CFM_SUPERSCRIPT        CFM_SUBSCRIPT
+
+// CHARFORMAT effects 
+#constant CFE_BOLD        0x0001
+#constant CFE_ITALIC        0x0002
+#constant CFE_UNDERLINE    0x0004
+#constant CFE_STRIKEOUT    0x0008
+#constant CFE_PROTECTED    0x0010
+#constant CFE_LINK        0x0020
+//NOTE: this corresponds to 
+//CFM_COLOR, which controls it 
+#constant CFE_AUTOCOLOR    0x40000000
+                                            
+//Superscript and subscript are mutually exclusive
+#constant CFE_SUBSCRIPT        0x00010000
+#constant CFE_SUPERSCRIPT    0x00020000         
+
+`Underline styles
+//Map charformat's bit underline to CF2
+#constant CFU_CF1UNDERLINE                        0xFF
+//For IME composition fake a selection
+#constant CFU_INVERT                                0xFE
+// (*) display as dash
+#constant CFU_UNDERLINETHICKLONGDASH        18
+// (*) display as dot
+#constant CFU_UNDERLINETHICKDOTTED            17
+// (*) display as dash dot dot
+#constant CFU_UNDERLINETHICKDASHDOTDOT        16
+// (*) display as dash dot
+#constant CFU_UNDERLINETHICKDASHDOT            15
+// (*) display as dash
+#constant CFU_UNDERLINETHICKDASH                14
+// (*) display as dash
+#constant CFU_UNDERLINELONGDASH                13
+// (*) display as wave
+#constant CFU_UNDERLINEHEAVYWAVE                12
+// (*) display as wave
+#constant CFU_UNDERLINEDOUBLEWAVE            11
+// (*) display as single
+#constant CFU_UNDERLINEHAIRLINE                10    
+#constant CFU_UNDERLINETHICK                    9
+#constant CFU_UNDERLINEWAVE                    8
+#constant CFU_UNDERLINEDASHDOTDOT            7
+#constant CFU_UNDERLINEDASHDOT                6
+#constant CFU_UNDERLINEDASH                    5
+#constant CFU_UNDERLINEDOTTED                    4
+// (*) display as single
+#constant CFU_UNDERLINEDOUBLE                    3
+// (*) display as single
+#constant CFU_UNDERLINEWORD                    2    
+#constant CFU_UNDERLINE                            1
+#constant CFU_UNDERLINENONE                    0
+
+//=== LISTBOX =========================================================================================
+`Listbox Styles
+#constant LBS_NOTIFY            0x0001
+#constant LBS_SORT              0x0002
+#constant LBS_NOREDRAW          0x0004
+#constant LBS_MULTIPLESEL       0x0008
+#constant LBS_OWNERDRAWFIXED    0x0010
+#constant LBS_OWNERDRAWVARIABLE 0x0020
+#constant LBS_HASSTRINGS        0x0040
+#constant LBS_USETABSTOPS       0x0080
+#constant LBS_NOINTEGRALHEIGHT  0x0100
+#constant LBS_MULTICOLUMN       0x0200
+#constant LBS_WANTKEYBOARDINPUT 0x0400
+#constant LBS_EXTENDEDSEL       0x0800
+#constant LBS_DISABLENOSCROLL   0x1000
+#constant LBS_NODATA            0x2000
+#constant LBS_NOSEL             0x4000
+#constant LBS_COMBOBOX          0x8000
+#constant LBS_STANDARD          10485763
+
+//==== TREEVIEW ==========================================================================================
+//collapse flags
+`Collapses the list
+#constant TVE_COLLAPSE            0x0001
+`Expands the list.
+#constant TVE_EXPAND              0x0002
+`Collapses the list if it is expanded or expands it if it is collapsed.
+#constant TVE_TOGGLE              0x0003
+`Partially expands the list. In this state the child items are visible and the parent item's plus sign (+), indicating that it can be expanded, is displayed. This flag must be used in combination with the TVE_EXPAND flag.
+#constant TVE_EXPANDPARTIAL       0x4000
+`Collapses the list and removes the child items. This flag must be used with the TVE_COLLAPSE flag.
+#constant TVE_COLLAPSERESET       0x8000
+
+//GetNextItem flags
+`Retrieves the topmost or very first item of the tree-view control.
+#constant TVGN_ROOT               0x0000
+`Retrieves the next sibling item.
+#constant TVGN_NEXT               0x0001
+`Retrieves the previous sibling item.
+#constant TVGN_PREVIOUS           0x0002
+`Retrieves the parent of the specified item.
+#constant TVGN_PARENT             0x0003
+`Retrieves the first child item of the item specified by the item parameter.
+#constant TVGN_CHILD              0x0004
+`Retrieves the first visible item. 
+#constant TVGN_FIRSTVISIBLE       0x0005
+`Retrieves the next visible item that follows the specified item. The specified item must be visible.
+#constant TVGN_NEXTVISIBLE        0x0006
+`Retrieves the first visible item that precedes the specified item. The specified item must be visible.
+#constant TVGN_PREVIOUSVISIBLE    0x0007
+`Retrieves the item that is the target of a drag-and-drop operation. ->NOT IMPLEMENTED
+#constant TVGN_DROPHILITE         0x0008
+`Retrieves the currently selected item.
+#constant TVGN_CARET              0x0009
+#constant TVGN_LASTVISIBLE        0x000A
+`Retrieves the next selected item.
+#constant TVGN_NEXTSELECTED       0x000B
+
+//=== DRAW ========================================================================================================
+`Pen Styles
+#constant PS_SOLID 0
+` -------
+#constant PS_DASH 1
+` ....... 
+#constant PS_DOT 2
+` _._._._ 
+#constant PS_DASHDOT 3
+` _.._.._ 
+#constant PS_DASHDOTDOT 4
+
+`draw_text styles [MSDN help: http://msdn.microsoft.com/en-us/library/dd162499]
+#constant DT_TOP                      0x00000000
+#constant DT_LEFT                     0x00000000
+#constant DT_CENTER                   0x00000001
+#constant DT_RIGHT                    0x00000002
+#constant DT_VCENTER                  0x00000004
+#constant DT_BOTTOM                   0x00000008
+#constant DT_WORDBREAK                0x00000010
+#constant DT_SINGLELINE               0x00000020
+#constant DT_EXPANDTABS               0x00000040
+#constant DT_TABSTOP                  0x00000080
+#constant DT_NOCLIP                   0x00000100
+#constant DT_EXTERNALLEADING          0x00000200
+#constant DT_CALCRECT                 0x00000400
+#constant DT_NOPREFIX                 0x00000800
+#constant DT_INTERNAL                 0x00001000
+#constant DT_EDITCONTROL              0x00002000
+#constant DT_PATH_ELLIPSIS            0x00004000
+#constant DT_END_ELLIPSIS             0x00008000
+#constant DT_MODIFYSTRING             0x00010000
+#constant DT_RTLREADING               0x00020000
+#constant DT_WORD_ELLIPSIS            0x00040000
+#constant DT_NOFULLWIDTHCHARBREAK     0x00080000
+#constant DT_HIDEPREFIX               0x00100000
+#constant DT_PREFIXONLY               0x00200000
+
+
+//==MENU===================================================================================================
+`item types
+#constant MFT_STRING          0x00000000
+#constant MFT_BITMAP          0x00000004
+#constant MFT_MENUBARBREAK    0x00000020
+#constant MFT_MENUBREAK       0x00000040
+#constant MFT_OWNERDRAW       0x00000100
+#constant MFT_RADIOCHECK      0x00000200
+#constant MFT_SEPARATOR       0x00000800
+#constant MFT_RIGHTORDER      0x00002000
+#constant MFT_RIGHTJUSTIFY    0x00004000
+
+`item states
+#constant MFS_GRAYED          0x00000003
+#constant MFS_DISABLED        MFS_GRAYED
+#constant MFS_CHECKED         0x00000008
+#constant MFS_HILITE          0x00000080
+#constant MFS_ENABLED         0x00000000
+#constant MFS_UNCHECKED       0x00000000
+#constant MFS_UNHILITE        0x00000000
+#constant MFS_DEFAULT         0x00001000
+
+REM Folder browser **************************************************************************************************
+`flags
+// Browsing for directory.
+// For finding a folder to start document searching
+#constant BIF_RETURNONLYFSDIRS   0x0001  
+// For starting the Find Computer
+#constant BIF_DONTGOBELOWDOMAIN  0x0002
+// Top of the dialog has 2 lines of text for BROWSEINFO.lpszTitle and one line if
+// this flag is set.  Passing the message BFFM_SETSTATUSTEXTA to the hwnd can set the
+// rest of the text.  This is not used with BIF_USENEWUI and BROWSEINFO.lpszTitle gets
+// all three lines of text.
+#constant BIF_STATUSTEXT         0x0004   
+#constant BIF_RETURNFSANCESTORS  0x0008
+// Add an editbox to the dialog
+#constant BIF_EDITBOX            0x0010
+// insist on valid result (or CANCEL)
+#constant BIF_VALIDATE           0x0020
+// Use the new dialog layout with the ability to resize
+#constant BIF_NEWDIALOGSTYLE     0x0040   
+#constant BIF_USENEWUI           (BIF_NEWDIALOGSTYLE || BIF_EDITBOX)
+// Allow URLs to be displayed or entered. (Requires BIF_USENEWUI)
+#constant BIF_BROWSEINCLUDEURLS  0x0080
+// Add a UA hint to the dialog, in place of the edit box. May not be combined with BIF_EDITBOX
+#constant BIF_UAHINT             0x0100
+ // Do not add the "New Folder" button to the dialog.  Only applicable with BIF_NEWDIALOGSTYLE.
+#constant BIF_NONEWFOLDERBUTTON  0x0200
+// don't traverse target as shortcut
+#constant BIF_NOTRANSLATETARGETS 0x0400
+// Browsing for Computers.
+#constant BIF_BROWSEFORCOMPUTER  0x1000 
+// Browsing for Printers
+#constant BIF_BROWSEFORPRINTER   0x2000
+// Browsing for Everything
+#constant BIF_BROWSEINCLUDEFILES 0x4000
+// sharable resources displayed (remote shares, requires BIF_USENEWUI)
+#constant BIF_SHAREABLE          0x8000
