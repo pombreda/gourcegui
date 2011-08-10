@@ -5,9 +5,9 @@ project name=GourceGUI
 
 ; **** source file information ****
 main=main.dba
-LineMain=0
+LineMain=299
 include1=BBBGUI_CONSTANTS.dba
-LineInclude1=0
+LineInclude1=1006
 include2=options.dba
 LineInclude2=0
 
