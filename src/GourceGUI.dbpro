@@ -5,7 +5,7 @@ project name=GourceGUI
 
 ; **** source file information ****
 main=main.dba
-LineMain=299
+LineMain=309
 include1=BBBGUI_CONSTANTS.dba
 LineInclude1=1006
 include2=options.dba
@@ -42,7 +42,7 @@ window resolution=800x600
 
 ; **** Media ****
 ; Example entries: media1=graphics\*.jpg
-media root path=C:\Users\Martin\Documents\DBProjects\gourcegui\src\
+media root path=C:\Users\menderleit\Documents\DBProjects\gourcegui\src\
 
 ; **** Icons ****
 
