@@ -301,7 +301,21 @@ repeat
         window set text GPEditBox, GG_GourcePath
     endif
     if button clicked(VPButton)
-        GG_VCSPath = BBB FolderBrowserDialog("Select CVS folder...",0)
+        f$ = BBB OpenFileDialog("Select folder...","All Files (*.*)|*.*","*.*")
+        if f$ <> ""
+            REM - Temporary fix for not having access to a folder browser!
+            REM - Just select ANY file in the target folder and this
+            REM - code will strip the filename from the path. :)
+            done = 0
+            i = len(f$)
+            repeat
+                if mid$(f$,i) = "/" or mid$(f$,i) = "\"
+                    GG_VCSPath = left$(f$,i)
+                    done = 1
+                endif
+                dec i, 1
+            until (done = 1 or i = 0)
+        endif
         window set text VPEditBox, GG_VCSPath
     endif
     if button clicked(LPButton)
@@ -309,8 +323,6 @@ repeat
         window set text LPEditBox, GG_LogoPath
     endif
     if button clicked(BPButton)
-        GG_BGPath = BBB OpenFileDialog("Select background image...","Bitmap (*.bmp)|*.bmp|PNG|*.png","*")
-        window set text BPEditBox, GG_BGPath
     endif
     
     // Update FLAGS based on CheckBox info.
